@@ -1,16 +1,54 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { useSettings } from "@/hooks/useSettings";
+import { useTimeSync } from "@/hooks/useTimeSync";
+import { useBeepEngine } from "@/hooks/useBeepEngine";
+import { useWakeLock } from "@/hooks/useWakeLock";
+import ClockDisplay from "@/components/ClockDisplay";
+import StatusBar from "@/components/StatusBar";
+import BottomBar from "@/components/BottomBar";
+import SettingsScreen from "@/components/SettingsScreen";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
+  const { settings, updateSettings } = useSettings();
+  const { syncedTime, getSyncedNowMs } = useTimeSync(
+    settings.gaFramTidEnabled,
+    settings.gaFramTidOffset
+  );
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  useBeepEngine(getSyncedNowMs, settings, syncedTime.syncStatus);
+  useWakeLock();
+
+  const isGoSecond = syncedTime.seconds === 0;
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="flex min-h-svh flex-col bg-background">
+      <StatusBar
+        timeSource={syncedTime.timeSource}
+        syncStatus={syncedTime.syncStatus}
+        gaFramTidEnabled={settings.gaFramTidEnabled}
+        gaFramTidOffset={settings.gaFramTidOffset}
+        visible={settings.showStatusBar}
+      />
+
+      <ClockDisplay time={syncedTime} isGoSecond={isGoSecond} />
+
+      <BottomBar
+        beepsEnabled={settings.beepsEnabled}
+        onToggleBeeps={() => updateSettings({ beepsEnabled: !settings.beepsEnabled })}
+        onOpenSettings={() => setSettingsOpen(true)}
+      />
+
+      <SettingsScreen
+        open={settingsOpen}
+        onOpenChange={setSettingsOpen}
+        settings={settings}
+        onUpdate={updateSettings}
+        timeSource={syncedTime.timeSource}
+        syncStatus={syncedTime.syncStatus}
+      />
     </div>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
