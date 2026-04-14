@@ -1,6 +1,6 @@
 {
-  "name": "startclock",
-  "short_name": "startclock",
+  "name": "StartClock",
+  "short_name": "StartClock",
   "description": "Orienteering start clock with GPS sync and countdown beeps",
   "start_url": "/",
   "display": "standalone",
