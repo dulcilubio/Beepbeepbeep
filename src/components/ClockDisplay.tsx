@@ -5,13 +5,12 @@ interface ClockDisplayProps {
   time: SyncedTime;
   isGoSecond: boolean;
   gaFramTidEnabled: boolean;
-  gaFramTidOffset: number;
   clockFont: ClockFont;
 }
 
 const pad = (n: number) => n.toString().padStart(2, "0");
 
-const ClockDisplay = ({ time, isGoSecond, gaFramTidEnabled, gaFramTidOffset, clockFont }: ClockDisplayProps) => {
+const ClockDisplay = ({ time, isGoSecond, gaFramTidEnabled, clockFont }: ClockDisplayProps) => {
   const fontFamily = CLOCK_FONTS[clockFont].family;
 
   return (
@@ -21,7 +20,7 @@ const ClockDisplay = ({ time, isGoSecond, gaFramTidEnabled, gaFramTidOffset, clo
           className="status-text text-primary mb-2"
           style={{ fontFamily }}
         >
-          Gå-fram-tid +{gaFramTidOffset} min
+          Gå-fram-tid
         </div>
       )}
       <div
