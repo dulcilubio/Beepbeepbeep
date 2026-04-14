@@ -19,7 +19,7 @@ const Index = () => {
   useBeepEngine(getSyncedNowMs, settings, syncedTime.syncStatus);
   useWakeLock();
 
-  const isGoSecond = syncedTime.seconds === 0;
+  const isGoSecond = syncedTime.seconds % settings.startInterval === 0;
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
