@@ -5,8 +5,9 @@ import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import type { Settings } from "@/hooks/useSettings";
+import { CLOCK_FONTS, type Settings, type ClockFont } from "@/hooks/useSettings";
 import type { TimeSource, SyncStatus } from "@/hooks/useTimeSync";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface SettingsScreenProps {
   open: boolean;
@@ -110,6 +111,20 @@ const SettingsScreen = ({ open, onOpenChange, settings, onUpdate, timeSource, sy
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
+                  <Label className="text-sm text-muted-foreground">Countdown length</Label>
+                  <span className="text-sm font-mono text-foreground">{(settings.countdownBeepMs / 1000).toFixed(2)}s</span>
+                </div>
+                <Slider
+                  min={10}
+                  max={990}
+                  step={10}
+                  value={[settings.countdownBeepMs]}
+                  onValueChange={([v]) => onUpdate({ countdownBeepMs: v })}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
                   <Label className="text-sm text-muted-foreground">Go-beep Hz</Label>
                   <span className="text-sm font-mono text-foreground">{settings.goBeepHz}</span>
                 </div>
@@ -121,6 +136,20 @@ const SettingsScreen = ({ open, onOpenChange, settings, onUpdate, timeSource, sy
                   onValueChange={([v]) => onUpdate({ goBeepHz: v })}
                 />
               </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label className="text-sm text-muted-foreground">Go-beep length</Label>
+                  <span className="text-sm font-mono text-foreground">{(settings.goBeepMs / 1000).toFixed(2)}s</span>
+                </div>
+                <Slider
+                  min={10}
+                  max={990}
+                  step={10}
+                  value={[settings.goBeepMs]}
+                  onValueChange={([v]) => onUpdate({ goBeepMs: v })}
+                />
+              </div>
             </div>
           </section>
 
@@ -129,13 +158,34 @@ const SettingsScreen = ({ open, onOpenChange, settings, onUpdate, timeSource, sy
           {/* Display */}
           <section>
             <h3 className="status-text text-muted-foreground mb-3">Display</h3>
-            <div className="flex items-center justify-between">
-              <Label htmlFor="statusbar-toggle" className="text-sm text-foreground">Show Status Bar</Label>
-              <Switch
-                id="statusbar-toggle"
-                checked={settings.showStatusBar}
-                onCheckedChange={(v) => onUpdate({ showStatusBar: v })}
-              />
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="statusbar-toggle" className="text-sm text-foreground">Show Status Bar</Label>
+                <Switch
+                  id="statusbar-toggle"
+                  checked={settings.showStatusBar}
+                  onCheckedChange={(v) => onUpdate({ showStatusBar: v })}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-sm text-foreground">Clock Font</Label>
+                <Select
+                  value={settings.clockFont}
+                  onValueChange={(v) => onUpdate({ clockFont: v as ClockFont })}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(CLOCK_FONTS).map(([key, { label, family }]) => (
+                      <SelectItem key={key} value={key}>
+                        <span style={{ fontFamily: family }}>{label}</span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </section>
         </div>

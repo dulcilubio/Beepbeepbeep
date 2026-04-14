@@ -1,5 +1,13 @@
 import { useState, useCallback, useEffect } from "react";
 
+export type ClockFont = "jetbrains" | "fira" | "source";
+
+export const CLOCK_FONTS: Record<ClockFont, { label: string; family: string }> = {
+  jetbrains: { label: "JetBrains Mono", family: "'JetBrains Mono', monospace" },
+  fira: { label: "Fira Code", family: "'Fira Code', monospace" },
+  source: { label: "Source Code Pro", family: "'Source Code Pro', monospace" },
+};
+
 export interface Settings {
   beepsEnabled: boolean;
   gaFramTidEnabled: boolean;
@@ -9,6 +17,7 @@ export interface Settings {
   countdownBeepMs: number;
   goBeepHz: number;
   goBeepMs: number;
+  clockFont: ClockFont;
 }
 
 const DEFAULTS: Settings = {
@@ -20,6 +29,7 @@ const DEFAULTS: Settings = {
   countdownBeepMs: 100,
   goBeepHz: 1760,
   goBeepMs: 300,
+  clockFont: "jetbrains",
 };
 
 const STORAGE_KEY = "startclock-settings";
