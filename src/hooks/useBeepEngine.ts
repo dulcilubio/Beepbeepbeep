@@ -29,16 +29,21 @@ export function useBeepEngine(
         const currentMs = getSyncedNowMs();
         const currentDate = new Date(currentMs);
         const currentSec = currentDate.getSeconds();
+        const interval = settings.startInterval;
 
         // Avoid double-beeping the same second
         if (currentSec !== lastBeepSecondRef.current) {
           lastBeepSecondRef.current = currentSec;
 
-          if (currentSec >= 55 && currentSec <= 59) {
-            // Countdown beeps
+          // Calculate if this second is a "go" second (multiple of interval)
+          const isGoSec = currentSec % interval === 0;
+          // Countdown beeps: 5 seconds before each go second
+          const secsUntilGo = (interval - (currentSec % interval)) % interval;
+          const isCountdownSec = secsUntilGo >= 1 && secsUntilGo <= 5;
+
+          if (isCountdownSec) {
             playBeep(settings.countdownBeepHz, settings.countdownBeepMs);
-          } else if (currentSec === 0) {
-            // Go beep
+          } else if (isGoSec) {
             playBeep(settings.goBeepHz, settings.goBeepMs);
           }
         }
@@ -54,5 +59,5 @@ export function useBeepEngine(
         clearTimeout(timerRef.current);
       }
     };
-  }, [settings.beepsEnabled, settings.countdownBeepHz, settings.countdownBeepMs, settings.goBeepHz, settings.goBeepMs, syncStatus, getSyncedNowMs]);
+  }, [settings.beepsEnabled, settings.countdownBeepHz, settings.countdownBeepMs, settings.goBeepHz, settings.goBeepMs, settings.startInterval, syncStatus, getSyncedNowMs]);
 }
