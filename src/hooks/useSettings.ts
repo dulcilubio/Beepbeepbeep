@@ -18,6 +18,7 @@ export interface Settings {
   goBeepHz: number;
   goBeepMs: number;
   clockFont: ClockFont;
+  startInterval: number; // 10-60 seconds, step 10
 }
 
 const DEFAULTS: Settings = {
@@ -30,6 +31,7 @@ const DEFAULTS: Settings = {
   goBeepHz: 1760,
   goBeepMs: 300,
   clockFont: "jetbrains",
+  startInterval: 60,
 };
 
 const STORAGE_KEY = "startclock-settings";
