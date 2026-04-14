@@ -5,8 +5,9 @@ import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import type { Settings } from "@/hooks/useSettings";
+import { CLOCK_FONTS, type Settings, type ClockFont } from "@/hooks/useSettings";
 import type { TimeSource, SyncStatus } from "@/hooks/useTimeSync";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface SettingsScreenProps {
   open: boolean;

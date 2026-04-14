@@ -31,7 +31,13 @@ const Index = () => {
         visible={settings.showStatusBar}
       />
 
-      <ClockDisplay time={syncedTime} isGoSecond={isGoSecond} />
+      <ClockDisplay
+        time={syncedTime}
+        isGoSecond={isGoSecond}
+        gaFramTidEnabled={settings.gaFramTidEnabled}
+        gaFramTidOffset={settings.gaFramTidOffset}
+        clockFont={settings.clockFont}
+      />
 
       <BottomBar
         beepsEnabled={settings.beepsEnabled}
