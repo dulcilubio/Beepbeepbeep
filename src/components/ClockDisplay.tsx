@@ -5,7 +5,6 @@ interface ClockDisplayProps {
   time: SyncedTime;
   isGoSecond: boolean;
   gaFramTidEnabled: boolean;
-  gaFramTidOffset: number;
   clockFont: ClockFont;
 }
 
