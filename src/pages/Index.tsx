@@ -35,7 +35,6 @@ const Index = () => {
         time={syncedTime}
         isGoSecond={isGoSecond}
         gaFramTidEnabled={settings.gaFramTidEnabled}
-        gaFramTidOffset={settings.gaFramTidOffset}
         clockFont={settings.clockFont}
       />
 
