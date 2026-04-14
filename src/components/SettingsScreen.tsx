@@ -50,6 +50,26 @@ const SettingsScreen = ({ open, onOpenChange, settings, onUpdate, timeSource, sy
 
           <Separator />
 
+          {/* Start Interval */}
+          <section>
+            <h3 className="status-text text-muted-foreground mb-3">Start Interval</h3>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label className="text-sm text-foreground">Interval</Label>
+                <span className="text-sm text-primary font-mono">{settings.startInterval}s</span>
+              </div>
+              <Slider
+                min={10}
+                max={60}
+                step={10}
+                value={[settings.startInterval]}
+                onValueChange={([v]) => onUpdate({ startInterval: v })}
+              />
+            </div>
+          </section>
+
+          <Separator />
+
           {/* Gå-fram-tid */}
           <section>
             <h3 className="status-text text-muted-foreground mb-3">Gå-fram-tid</h3>
