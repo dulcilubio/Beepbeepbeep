@@ -11,14 +11,15 @@ export const CLOCK_FONTS: Record<ClockFont, { label: string; family: string }> =
 export interface Settings {
   beepsEnabled: boolean;
   gaFramTidEnabled: boolean;
-  gaFramTidOffset: number; // 0-5 minutes
+  gaFramTidOffset: number;
   showStatusBar: boolean;
   countdownBeepHz: number;
   countdownBeepMs: number;
   goBeepHz: number;
   goBeepMs: number;
   clockFont: ClockFont;
-  startInterval: number; // 10-60 seconds, step 10
+  startInterval: number;
+  invertedMode: boolean;
 }
 
 const DEFAULTS: Settings = {
@@ -32,6 +33,7 @@ const DEFAULTS: Settings = {
   goBeepMs: 300,
   clockFont: "jetbrains",
   startInterval: 60,
+  invertedMode: false,
 };
 
 const STORAGE_KEY = "startclock-settings";

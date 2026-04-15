@@ -206,6 +206,15 @@ const SettingsScreen = ({ open, onOpenChange, settings, onUpdate, timeSource, sy
                   </SelectContent>
                 </Select>
               </div>
+
+              <div className="flex items-center justify-between">
+                <Label htmlFor="inverted-toggle" className="text-sm text-foreground">Inverterat läge (ljus)</Label>
+                <Switch
+                  id="inverted-toggle"
+                  checked={settings.invertedMode}
+                  onCheckedChange={(v) => onUpdate({ invertedMode: v })}
+                />
+              </div>
             </div>
           </section>
         </div>
