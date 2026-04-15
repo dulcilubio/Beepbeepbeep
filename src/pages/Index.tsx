@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSettings } from "@/hooks/useSettings";
+import { CLOCK_FONTS } from "@/hooks/useSettings";
 import { useTimeSync } from "@/hooks/useTimeSync";
 import { useBeepEngine } from "@/hooks/useBeepEngine";
 import { useWakeLock } from "@/hooks/useWakeLock";
@@ -18,6 +19,13 @@ const Index = () => {
 
   useBeepEngine(getSyncedNowMs, settings, syncedTime.syncStatus);
   useWakeLock();
+
+  // Apply inverted mode class and font to root
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.toggle("inverted", settings.invertedMode);
+    root.style.setProperty("--clock-font", CLOCK_FONTS[settings.clockFont].family);
+  }, [settings.invertedMode, settings.clockFont]);
 
   const isGoSecond = syncedTime.seconds % settings.startInterval === 0;
 
