@@ -1,11 +1,11 @@
 import { useState, useCallback, useEffect } from "react";
 
-export type ClockFont = "jetbrains" | "fira" | "source";
+export type ClockFont = "jetbrains" | "ibm" | "space";
 
 export const CLOCK_FONTS: Record<ClockFont, { label: string; family: string }> = {
   jetbrains: { label: "JetBrains Mono", family: "'JetBrains Mono', monospace" },
-  fira: { label: "Fira Code", family: "'Fira Code', monospace" },
-  source: { label: "Source Code Pro", family: "'Source Code Pro', monospace" },
+  ibm: { label: "IBM Plex Mono", family: "'IBM Plex Mono', monospace" },
+  space: { label: "Space Mono", family: "'Space Mono', monospace" },
 };
 
 export interface Settings {
@@ -38,10 +38,24 @@ const DEFAULTS: Settings = {
 
 const STORAGE_KEY = "startclock-settings";
 
+function normalizeClockFont(value: unknown): ClockFont {
+  if (value === "jetbrains" || value === "ibm" || value === "space") return value;
+  if (value === "fira") return "ibm";
+  if (value === "source") return "space";
+  return DEFAULTS.clockFont;
+}
+
 function loadSettings(): Settings {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return { ...DEFAULTS, ...JSON.parse(raw) };
+    if (raw) {
+      const parsed = JSON.parse(raw) as Partial<Settings> & { clockFont?: string };
+      return {
+        ...DEFAULTS,
+        ...parsed,
+        clockFont: normalizeClockFont(parsed.clockFont),
+      };
+    }
   } catch {}
   return { ...DEFAULTS };
 }
