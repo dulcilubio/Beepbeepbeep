@@ -201,8 +201,8 @@ const SettingsScreen = ({ open, onOpenChange, settings, onUpdate, timeSource, sy
                     {Object.entries(CLOCK_FONTS).map(([key, { label, family }]) => (
                       <SelectItem key={key} value={key}>
                         <div className="flex w-full items-center justify-between gap-4">
-                          <span style={{ fontFamily }}>{label}</span>
-                          <span className="text-xs text-muted-foreground" style={{ fontFamily }}>
+                          <span style={{ fontFamily: family }}>{label}</span>
+                          <span className="text-xs text-muted-foreground" style={{ fontFamily: family }}>
                             08:16:24
                           </span>
                         </div>
