@@ -18,6 +18,7 @@ export interface Settings {
   goBeepHz: number;
   goBeepMs: number;
   clockFont: ClockFont;
+  clockBold: boolean;
   startInterval: number;
   invertedMode: boolean;
 }
@@ -32,6 +33,7 @@ const DEFAULTS: Settings = {
   goBeepHz: 1760,
   goBeepMs: 300,
   clockFont: "jetbrains",
+  clockBold: false,
   startInterval: 60,
   invertedMode: false,
 };
