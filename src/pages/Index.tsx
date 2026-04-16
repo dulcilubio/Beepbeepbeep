@@ -44,6 +44,7 @@ const Index = () => {
         isGoSecond={isGoSecond}
         gaFramTidEnabled={settings.gaFramTidEnabled}
         clockFont={settings.clockFont}
+        clockBold={settings.clockBold}
       />
 
       <BottomBar

@@ -213,6 +213,15 @@ const SettingsScreen = ({ open, onOpenChange, settings, onUpdate, timeSource, sy
               </div>
 
               <div className="flex items-center justify-between">
+                <Label htmlFor="bold-toggle" className="text-sm text-foreground">Fetstil (bold)</Label>
+                <Switch
+                  id="bold-toggle"
+                  checked={settings.clockBold}
+                  onCheckedChange={(v) => onUpdate({ clockBold: v })}
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
                 <Label htmlFor="inverted-toggle" className="text-sm text-foreground">Inverterat läge (ljus)</Label>
                 <Switch
                   id="inverted-toggle"
