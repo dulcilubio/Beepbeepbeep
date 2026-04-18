@@ -8,7 +8,7 @@ private let segBits: [Character: UInt8] = [
     "8": 127,"9": 111
 ]
 
-// Chamfered horizontal segment hexagon
+// Chamfered hexagon for a horizontal segment
 private func hSeg(x: CGFloat, y: CGFloat, w: CGFloat, h: CGFloat) -> Path {
     let e = h / 2
     var p = Path()
@@ -22,7 +22,7 @@ private func hSeg(x: CGFloat, y: CGFloat, w: CGFloat, h: CGFloat) -> Path {
     return p
 }
 
-// Chamfered vertical segment hexagon
+// Chamfered hexagon for a vertical segment
 private func vSeg(x: CGFloat, y: CGFloat, w: CGFloat, h: CGFloat) -> Path {
     let e = w / 2
     var p = Path()
@@ -36,25 +36,21 @@ private func vSeg(x: CGFloat, y: CGFloat, w: CGFloat, h: CGFloat) -> Path {
     return p
 }
 
-private func drawDigit(
-    ctx: inout GraphicsContext,
-    bits: UInt8,
-    ox: CGFloat, oy: CGFloat,
-    w: CGFloat, h: CGFloat,
-    active: Color, dim: Color
-) {
+// Returns the 7 segment paths and their on/off state for a digit
+private func digitSegments(bits: UInt8, ox: CGFloat, oy: CGFloat,
+                            w: CGFloat, h: CGFloat) -> [(Path, Bool)] {
     let t = w * 0.15
     let g = t * 0.45
-
-    func col(_ bit: Int) -> Color { (bits >> bit) & 1 == 1 ? active : dim }
-
-    ctx.fill(hSeg(x: ox+g+t,   y: oy+g,       w: w-2*(g+t), h: t),  with: .color(col(0)))
-    ctx.fill(vSeg(x: ox+w-t-g, y: oy+g+t,     w: t, h: h/2-t-2*g),  with: .color(col(1)))
-    ctx.fill(vSeg(x: ox+w-t-g, y: oy+h/2+g,   w: t, h: h/2-t-2*g),  with: .color(col(2)))
-    ctx.fill(hSeg(x: ox+g+t,   y: oy+h-t-g,   w: w-2*(g+t), h: t),  with: .color(col(3)))
-    ctx.fill(vSeg(x: ox+g,     y: oy+h/2+g,   w: t, h: h/2-t-2*g),  with: .color(col(4)))
-    ctx.fill(vSeg(x: ox+g,     y: oy+g+t,     w: t, h: h/2-t-2*g),  with: .color(col(5)))
-    ctx.fill(hSeg(x: ox+g+t,   y: oy+h/2-t/2, w: w-2*(g+t), h: t),  with: .color(col(6)))
+    func on(_ bit: Int) -> Bool { (bits >> bit) & 1 == 1 }
+    return [
+        (hSeg(x: ox+g+t,    y: oy+g,       w: w-2*(g+t), h: t), on(0)),
+        (vSeg(x: ox+w-t-g,  y: oy+g+t,     w: t, h: h/2-t-2*g), on(1)),
+        (vSeg(x: ox+w-t-g,  y: oy+h/2+g,   w: t, h: h/2-t-2*g), on(2)),
+        (hSeg(x: ox+g+t,    y: oy+h-t-g,   w: w-2*(g+t), h: t), on(3)),
+        (vSeg(x: ox+g,      y: oy+h/2+g,   w: t, h: h/2-t-2*g), on(4)),
+        (vSeg(x: ox+g,      y: oy+g+t,     w: t, h: h/2-t-2*g), on(5)),
+        (hSeg(x: ox+g+t,    y: oy+h/2-t/2, w: w-2*(g+t), h: t), on(6)),
+    ]
 }
 
 struct SevenSegmentClockView: View {
@@ -89,15 +85,19 @@ struct SevenSegmentClockView: View {
                     if ch == ":" {
                         let dotR = dh * 0.07
                         let cx   = x + cw / 2
-                        let dot1 = CGRect(x: cx-dotR, y: startY+dh*0.27-dotR, width: dotR*2, height: dotR*2)
-                        let dot2 = CGRect(x: cx-dotR, y: startY+dh*0.63-dotR, width: dotR*2, height: dotR*2)
+                        let dot1 = CGRect(x: cx-dotR, y: startY+dh*0.27-dotR,
+                                          width: dotR*2, height: dotR*2)
+                        let dot2 = CGRect(x: cx-dotR, y: startY+dh*0.63-dotR,
+                                          width: dotR*2, height: dotR*2)
                         ctx.fill(Path(ellipseIn: dot1), with: .color(active))
                         ctx.fill(Path(ellipseIn: dot2), with: .color(active))
                         x += cw
                     } else {
                         let b = segBits[ch] ?? 0
-                        drawDigit(ctx: &ctx, bits: b, ox: x, oy: startY,
-                                  w: dw, h: dh, active: active, dim: dim)
+                        for (path, isOn) in digitSegments(bits: b, ox: x, oy: startY,
+                                                          w: dw, h: dh) {
+                            ctx.fill(path, with: .color(isOn ? active : dim))
+                        }
                         x += dw
                     }
                     if i < chars.count - 1 { x += gap }
