@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Beep Beep Beep</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 760px;
+      margin: 40px auto;
+      padding: 0 24px 80px;
+      color: #1a1a1a;
+      line-height: 1.7;
+      font-size: 16px;
+    }
+    h1 { font-size: 1.8em; border-bottom: 2px solid #e0e0e0; padding-bottom: 12px; }
+    h2 { font-size: 1.2em; margin-top: 2em; }
+    h3 { font-size: 1em; margin-top: 1.5em; color: #333; }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1em 0;
+      font-size: 0.95em;
+    }
+    th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+    th { background: #f5f5f5; }
+    hr { border: none; border-top: 1px solid #e0e0e0; margin: 2em 0; }
+    a { color: #0070f3; }
+    .meta { color: #666; font-size: 0.9em; }
+    footer { margin-top: 3em; font-size: 0.85em; color: #888; }
+  </style>
+</head>
+<body>
+
+<h1>Privacy Policy — Beep Beep Beep</h1>
+
+<p class="meta">
+  <strong>App name:</strong> Beep Beep Beep<br>
+  <strong>Developer:</strong> Erik Frick (independent developer)<br>
+  <strong>Contact:</strong> <a href="mailto:erik.frick@everdrone.com">erik.frick@everdrone.com</a><br>
+  <strong>Country:</strong> Sweden<br>
+  <strong>Effective date:</strong> 2026-04-18<br>
+  <strong>Latest revision:</strong> April 2026
+</p>
+
+<hr>
+
+<h2>1. Introduction</h2>
+<p>Beep Beep Beep ("the app", "we", "us") is an iOS application designed as a precision start clock for sailing races and similar timed events. It synchronises to GPS time and plays audio signals at configurable intervals.</p>
+<p>This Privacy Policy explains what data the app accesses, how it is used, and what rights you have.</p>
+<p>By using Beep Beep Beep, you acknowledge that you have read and understood this Privacy Policy.</p>
+
+<hr>
+
+<h2>2. Data We Access</h2>
+
+<h3>2.1 Location / GPS (CoreLocation)</h3>
+<p>Beep Beep Beep requests <em>When In Use</em> location access solely to obtain the timestamp of the GPS fix. The app reads the time embedded in the satellite signal (<code>CLLocation.timestamp</code>) to synchronise its internal clock with GPS time. No geographic coordinates, routes, or movement data are recorded, stored, or transmitted by the app.</p>
+<table>
+  <tr><th>Data accessed</th><th>Purpose</th><th>Stored?</th><th>Transmitted?</th></tr>
+  <tr><td>GPS timestamp</td><td>Clock synchronisation</td><td>No</td><td>No</td></tr>
+  <tr><td>GPS coordinates</td><td>Not used</td><td>No</td><td>No</td></tr>
+</table>
+<p>You can deny location permission and the app will fall back to NTP or device clock.</p>
+
+<hr>
+
+<h3>2.2 Network Time Protocol (NTP)</h3>
+<p>When GPS is unavailable or permission is not granted, the app queries public NTP servers to synchronise its clock. NTP is a standard internet time protocol; no personal data is included in NTP packets. As with any internet request, NTP servers receive your device's IP address.</p>
+
+<hr>
+
+<h3>2.3 Local Settings (AppStorage)</h3>
+<p>User preferences (start interval, beep pitch, display font, etc.) are stored locally in iOS UserDefaults. This data never leaves your device.</p>
+
+<hr>
+
+<h3>2.4 Data We Do NOT Collect</h3>
+<ul>
+  <li>We do <strong>not</strong> collect your name, email address, or any account information</li>
+  <li>We do <strong>not</strong> record or store your GPS location</li>
+  <li>We do <strong>not</strong> collect advertising identifiers (IDFA) or perform device fingerprinting</li>
+  <li>We do <strong>not</strong> use analytics SDKs (e.g. Firebase, Amplitude, Mixpanel)</li>
+  <li>We do <strong>not</strong> use third-party crash reporting services</li>
+  <li>We do <strong>not</strong> operate any backend servers</li>
+</ul>
+
+<hr>
+
+<h2>3. How Data Is Used</h2>
+<table>
+  <tr><th>Purpose</th><th>Data involved</th></tr>
+  <tr><td>Synchronise clock to GPS time</td><td>GPS timestamp (in memory only, not stored)</td></tr>
+  <tr><td>Synchronise clock to NTP (fallback)</td><td>NTP exchange (no personal data)</td></tr>
+  <tr><td>Store user preferences</td><td>Settings, locally on device</td></tr>
+  <tr><td>Play audio beeps</td><td>No personal data</td></tr>
+</table>
+<p>All processing happens <strong>on your device</strong>. Beep Beep Beep does not operate its own servers and does not transmit personal data.</p>
+
+<hr>
+
+<h2>4. Data Shared with Third Parties</h2>
+<p>Beep Beep Beep does not share personal data with any third parties. The only external communication is standard NTP time queries to public time servers (e.g. Apple's <code>time.apple.com</code>), which are anonymous by design.</p>
+
+<hr>
+
+<h2>5. Data Storage and Security</h2>
+<table>
+  <tr><th>Location</th><th>Data stored</th><th>Access</th></tr>
+  <tr><td>Device (UserDefaults)</td><td>App settings and preferences</td><td>Private, local only</td></tr>
+</table>
+<p>No personal data is stored. Deleting the app removes all locally stored settings from the device.</p>
+
+<hr>
+
+<h2>6. GDPR — EU/EEA Users</h2>
+<p>Because Beep Beep Beep does not collect or process personal data beyond what is described in section 2.2 (IP address sent to public NTP servers as a technical necessity), there is minimal GDPR exposure. No data subject rights requests are applicable to data the app does not hold.</p>
+<p>If you have questions or concerns: <a href="mailto:erik.frick@everdrone.com">erik.frick@everdrone.com</a></p>
+
+<hr>
+
+<h2>7. California Privacy Rights (CCPA / CPRA)</h2>
+<p>Beep Beep Beep does <strong>not sell or share personal data</strong> as defined under CCPA/CPRA.</p>
+
+<hr>
+
+<h2>8. Children's Privacy</h2>
+<p>The app does not knowingly collect personal information from children under 13 (or under 16 in the EU). It contains no account creation, social features, advertising, or in-app purchases.</p>
+
+<hr>
+
+<h2>9. Changes to This Policy</h2>
+<p>We may update this policy from time to time. The revision date above will be updated accordingly. Continued use of the app after changes constitutes acceptance of the updated policy.</p>
+
+<hr>
+
+<h2>10. Contact</h2>
+<p>
+  <strong>Developer:</strong> Erik Frick (independent developer)<br>
+  <strong>Email:</strong> <a href="mailto:erik.frick@everdrone.com">erik.frick@everdrone.com</a><br>
+  <strong>Country:</strong> Sweden
+</p>
+
+<footer>
+  <p><em>This policy is designed to comply with Apple App Store requirements, GDPR, and CCPA.</em></p>
+</footer>
+
+</body>
+</html>
