@@ -22,16 +22,6 @@ struct ControlsView: View {
 
             Spacer()
 
-            // Settings button
-            Button {
-                showSettings = true
-            } label: {
-                Image(systemName: "gearshape.fill")
-                    .font(.system(size: 22))
-                    .foregroundStyle(.gray)
-                    .frame(width: 44, height: 44)
-            }
-
             // Exit button
             Button {
                 gnss.stop()
@@ -39,6 +29,18 @@ struct ControlsView: View {
                 exit(0)
             } label: {
                 Image(systemName: "xmark.circle.fill")
+                    .font(.system(size: 22))
+                    .foregroundStyle(.gray)
+                    .frame(width: 44, height: 44)
+            }
+
+            Spacer()
+
+            // Settings button
+            Button {
+                showSettings = true
+            } label: {
+                Image(systemName: "gearshape.fill")
                     .font(.system(size: 22))
                     .foregroundStyle(.gray)
                     .frame(width: 44, height: 44)

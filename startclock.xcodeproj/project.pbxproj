@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E19AB31476385498F02E450 /* SevenSegmentClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB389B17DFD5AFE00F73C8 /* SevenSegmentClockView.swift */; };
 		3AC1DC74B6A65C6E2D5C9690 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBC55EFC92382A78158DA2A2 /* Assets.xcassets */; };
 		514BA7CF49D229AD2E562C0C /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A03C8276CDA8910C868052 /* AudioManager.swift */; };
 		6073BF76C537E029BD820B1C /* GNSSTimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8DD2D6431C288E5369E819 /* GNSSTimeManager.swift */; };
@@ -18,6 +19,7 @@
 		D32E5D90EF2E5AEBA385BD4E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB3D78665FEEF1BF19F56D4 /* SettingsView.swift */; };
 		E8A2486C7A702ADDF6C5E6B3 /* ControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F26B359B1AB1E3E8DD8BC7 /* ControlsView.swift */; };
 		FA896CCC75317DF5B31B35EA /* startclockApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E3A1E6C23300A6DA8340 /* startclockApp.swift */; };
+		FCB4DE2DEBF4C69B7344F52F /* FlapClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C475DEA465A98DDF8FA1127 /* FlapClockView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,9 +29,11 @@
 		59D34F80DC5CA012EE027296 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		70E478D6A40A039FA99A82DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		773578700309145656708CC5 /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
+		8C475DEA465A98DDF8FA1127 /* FlapClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlapClockView.swift; sourceTree = "<group>"; };
 		8FE77E96E0DF73AE27680F5E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9A11DE5CDD6CB8487A0F8091 /* NTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NTPClient.swift; sourceTree = "<group>"; };
 		9CB3D78665FEEF1BF19F56D4 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		D0CB389B17DFD5AFE00F73C8 /* SevenSegmentClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenSegmentClockView.swift; sourceTree = "<group>"; };
 		DBC55EFC92382A78158DA2A2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EA8DD2D6431C288E5369E819 /* GNSSTimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GNSSTimeManager.swift; sourceTree = "<group>"; };
 		F1F26B359B1AB1E3E8DD8BC7 /* ControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsView.swift; sourceTree = "<group>"; };
@@ -90,7 +94,9 @@
 			children = (
 				773578700309145656708CC5 /* ClockView.swift */,
 				F1F26B359B1AB1E3E8DD8BC7 /* ControlsView.swift */,
+				8C475DEA465A98DDF8FA1127 /* FlapClockView.swift */,
 				9CB3D78665FEEF1BF19F56D4 /* SettingsView.swift */,
+				D0CB389B17DFD5AFE00F73C8 /* SevenSegmentClockView.swift */,
 				55A40EC5E3C3DD70CDC7B123 /* StatusBarView.swift */,
 			);
 			path = Views;
@@ -171,9 +177,11 @@
 				9DD34E23E0171FC528DBEBFF /* ClockView.swift in Sources */,
 				7CE23FACBDDC5EEF1992B133 /* ContentView.swift in Sources */,
 				E8A2486C7A702ADDF6C5E6B3 /* ControlsView.swift in Sources */,
+				FCB4DE2DEBF4C69B7344F52F /* FlapClockView.swift in Sources */,
 				6073BF76C537E029BD820B1C /* GNSSTimeManager.swift in Sources */,
 				B59330B7E18CBC78900AE013 /* NTPClient.swift in Sources */,
 				D32E5D90EF2E5AEBA385BD4E /* SettingsView.swift in Sources */,
+				0E19AB31476385498F02E450 /* SevenSegmentClockView.swift in Sources */,
 				AF158694BBF5311DC73D84A2 /* StatusBarView.swift in Sources */,
 				FA896CCC75317DF5B31B35EA /* startclockApp.swift in Sources */,
 			);
@@ -189,16 +197,14 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 257V44642S;
 				INFOPLIST_FILE = startclock/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = BeepBeepBeepBeepBeepBeeeeeeep;
+				INFOPLIST_KEY_CFBundleDisplayName = beepbeepbeepbeepbeepbeeeeeeep;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -210,16 +216,14 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 257V44642S;
 				INFOPLIST_FILE = startclock/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = BeepBeepBeepBeepBeepBeeeeeeep;
+				INFOPLIST_KEY_CFBundleDisplayName = beepbeepbeepbeepbeepbeeeeeeep;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;

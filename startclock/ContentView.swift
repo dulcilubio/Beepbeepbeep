@@ -104,13 +104,12 @@ struct ContentView: View {
 
     private func scheduleBeepsIfNeeded(for date: Date) {
         guard settings.beepEnabled else { return }
-        let cal = Calendar.current
-        let s   = cal.component(.second, from: date)
-        guard s != lastBeepSecond else { return }
-        lastBeepSecond = s
+        let totalSecs = Int(date.timeIntervalSince1970)
+        guard totalSecs != lastBeepSecond else { return }
+        lastBeepSecond = totalSecs
 
         let interval      = settings.startInterval
-        let posInInterval = s % interval
+        let posInInterval = totalSecs % interval
 
         if posInInterval == 0 {
             audio.beep(

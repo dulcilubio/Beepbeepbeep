@@ -1,6 +1,13 @@
 import SwiftUI
 
 class AppSettings: ObservableObject {
+
+    init() {
+        // "system" (SF Mono) was removed — migrate any saved value to "sfpro"
+        if UserDefaults.standard.string(forKey: "clockFont") == "system" {
+            UserDefaults.standard.set("sfpro", forKey: "clockFont")
+        }
+    }
     // Start interval — kept for clock highlighting logic; not exposed in Settings UI
     @AppStorage("startInterval")             var startInterval: Int     = 60
 

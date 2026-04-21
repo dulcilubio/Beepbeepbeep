@@ -15,7 +15,7 @@ struct ClockView: View {
     }
 
     private var clockColor: Color {
-        let pos = components.s % settings.startInterval
+        let pos = Int(date.timeIntervalSince1970) % settings.startInterval
         if pos == 0 {
             return .green
         } else if settings.startInterval - pos <= 5 {
