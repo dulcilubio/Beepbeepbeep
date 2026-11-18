@@ -20,7 +20,7 @@ enum StartSchedule {
 
     /// How long a departed group lingers, fading, before the banner belongs
     /// entirely to the runners who have not gone yet.
-    static let departedFadeSeconds: Double = 8
+    static let departedFadeSeconds: Double = 5
 
     /// What the participant banner shows right now.
     struct BannerContent: Equatable {
@@ -44,9 +44,9 @@ enum StartSchedule {
         let start = windowStart(secondsFromMidnight, size: size)
 
         return (
-            previous: entries.filter { $0.starts(in: start - size ..< start) },
-            current:  entries.filter { $0.starts(in: start ..< start + size) },
-            next:     entries.filter { $0.starts(in: start + size ..< start + 2 * size) }
+            previous: group(entries, in: start - size ..< start),
+            current:  group(entries, in: start ..< start + size),
+            next:     group(entries, in: start + size ..< start + 2 * size)
         )
     }
 
@@ -81,13 +81,58 @@ enum StartSchedule {
         let elapsed  = Double(secondsFromMidnight - start)
         let progress = min(max(elapsed / departedFadeSeconds, 0), 1)
         let opacity  = 0.7 * (1 - progress)
-        let departed = opacity > 0 ? entries.filter { $0.starts(in: start ..< start + size) } : []
+        let departed = opacity > 0 ? group(entries, in: start ..< start + size) : []
 
         return BannerContent(
             departed: departed,
             departedOpacity: opacity,
-            current: entries.filter { $0.starts(in: start + size ..< start + 2 * size) },
-            next:    entries.filter { $0.starts(in: start + 2 * size ..< start + 3 * size) }
+            current: group(entries, in: start + size ..< start + 2 * size),
+            next:    group(entries, in: start + 2 * size ..< start + 3 * size)
+        )
+    }
+
+    /// Entries starting inside `range`, in start order. Sources hand us their
+    /// own order — Eventor gives page order — and a banner listing 11:23:53
+    /// above 11:23:31 is read as a mistake by whoever is calling runners up.
+    private static func group(_ entries: [StartEntry], in range: Range<Int>) -> [StartEntry] {
+        entries
+            .filter { $0.starts(in: range) }
+            .sorted { ($0.startSeconds ?? 0, $0.name) < ($1.startSeconds ?? 0, $1.name) }
+    }
+
+    /// How many rows of each group fit, when the text is scaled up far enough
+    /// that showing everything would leave the clock no room.
+    /// The group that has not started yet wins the space.
+    struct RowAllocation: Equatable {
+        var departed = 0
+        var current  = 0
+        var next     = 0
+        var hiddenCurrent = 0      // runners in focus that did not fit
+    }
+
+    static let maxDepartedRows = 3
+    static let maxCurrentRows  = 6
+    static let maxNextRows     = 3
+
+    static func rowAllocation(
+        fitting available: Int,
+        departed: Int,
+        current: Int,
+        next: Int
+    ) -> RowAllocation {
+        var remaining = max(available, 1)
+
+        let currentShown = min(current, min(maxCurrentRows, remaining))
+        remaining -= currentShown
+        let nextShown = min(next, min(maxNextRows, remaining))
+        remaining -= nextShown
+        let departedShown = min(departed, min(maxDepartedRows, remaining))
+
+        return RowAllocation(
+            departed: departedShown,
+            current: currentShown,
+            next: nextShown,
+            hiddenCurrent: current - currentShown
         )
     }
 

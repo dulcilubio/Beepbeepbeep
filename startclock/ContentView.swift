@@ -16,6 +16,9 @@ struct ContentView: View {
     @State private var hideWorkItem: DispatchWorkItem?
     @State private var pinchBaseScale: Double?
 
+    /// The share of the screen the clock keeps whatever the names are doing.
+    private static let clockMinHeightFraction: CGFloat = 0.45
+
     @StateObject private var audio = AudioManager()
     private let timer = Timer.publish(every: 0.05, on: .main, in: .common).autoconnect()
 
@@ -27,7 +30,8 @@ struct ContentView: View {
             // Outer VStack reserves space for status bar (top) and controls (bottom).
             // Placing the banner here — not as an overlay — lets the clock shrink to
             // make room, preventing occlusion in both portrait and landscape.
-            VStack(spacing: 0) {
+            GeometryReader { geo in
+              VStack(spacing: 0) {
                 Color.clear.frame(height: 40)   // clear status bar overlay
 
                 VStack(spacing: 8) {
@@ -51,7 +55,9 @@ struct ContentView: View {
                         bold: settings.clockBold
                     )
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .frame(maxWidth: .infinity,
+                       minHeight: geo.size.height * Self.clockMinHeightFraction,
+                       maxHeight: .infinity)
 
                 if !banner.isEmpty {
                     ParticipantBannerView(
@@ -60,7 +66,11 @@ struct ContentView: View {
                         current:  banner.current,
                         next:     banner.next,
                         showSeconds: showsSeconds,
-                        scale: settings.bannerTextScale
+                        scale: settings.bannerTextScale,
+                        // Scaling the names up must never squeeze the clock —
+                        // rows drop out instead. The 40 pt is the status strip.
+                        maxHeight: max(0, geo.size.height
+                                          * (1 - Self.clockMinHeightFraction) - 40)
                     )
                     .padding(.horizontal, 16)
                     .padding(.bottom, 8)
@@ -83,6 +93,7 @@ struct ContentView: View {
                     )
                 }
                 // No bottom reservation — controls overlay floats on top of the banner.
+              }
             }
         }
         // Chrome floats on top without affecting clock layout.

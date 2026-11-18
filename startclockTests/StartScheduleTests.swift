@@ -158,8 +158,9 @@ final class BannerContentTests: XCTestCase {
         XCTAssertGreaterThan(atStart, midway)
         XCTAssertGreaterThan(midway, 0)
 
+        // Five seconds is the whole fade — by then the banner is theirs alone.
         let afterFade = StartSchedule.banner(
-            entries: startList, secondsFromMidnight: secs("18:22:09"),
+            entries: startList, secondsFromMidnight: secs("18:22:05"),
             interval: 60, leadTimeEnabled: false
         )
         XCTAssertEqual(afterFade.departedOpacity, 0, accuracy: 0.001)
@@ -184,5 +185,72 @@ final class BannerContentTests: XCTestCase {
             interval: 60, leadTimeEnabled: false
         )
         XCTAssertTrue(banner.isEmpty)
+    }
+}
+
+/// Ordering inside a group, and what to drop when the names are scaled up.
+final class BannerLayoutTests: XCTestCase {
+
+    private func entry(_ hhmmss: String, name: String) -> StartEntry {
+        let parts = hhmmss.split(separator: ":").map { Int($0)! }
+        let seconds = parts[0] * 3600 + parts[1] * 60 + (parts.count > 2 ? parts[2] : 0)
+        return StartEntry(name: name, club: nil, start: seconds * 100, startnumber: nil)
+    }
+
+    private func secs(_ hhmmss: String) -> Int {
+        let parts = hhmmss.split(separator: ":").map { Int($0)! }
+        return parts[0] * 3600 + parts[1] * 60 + (parts.count > 2 ? parts[2] : 0)
+    }
+
+    /// Eventor hands over page order, not start order. Seen at a start as
+    /// 11:23:53 listed above 11:23:31.
+    func testGroupsComeBackInStartOrderFromAnUnsortedSource() {
+        let unsorted = [
+            entry("11:23:53", name: "Cecilia"),
+            entry("11:23:00", name: "Gabriel"),
+            entry("11:23:31", name: "Robin"),
+        ]
+        let banner = StartSchedule.banner(
+            entries: unsorted, secondsFromMidnight: secs("11:22:30"),
+            interval: 60, leadTimeEnabled: false
+        )
+        XCTAssertEqual(banner.current.map(\.name), ["Gabriel", "Robin", "Cecilia"])
+    }
+
+    func testRunnersSharingAStartTimeAreOrderedByName() {
+        let entries = [entry("11:23:00", name: "Bertil"), entry("11:23:00", name: "Anna")]
+        let banner = StartSchedule.banner(
+            entries: entries, secondsFromMidnight: secs("11:22:30"),
+            interval: 60, leadTimeEnabled: false
+        )
+        XCTAssertEqual(banner.current.map(\.name), ["Anna", "Bertil"])
+    }
+
+    // MARK: - Row budget
+
+    func testEverythingFitsWhenThereIsRoom() {
+        let shown = StartSchedule.rowAllocation(fitting: 12, departed: 3, current: 6, next: 3)
+        XCTAssertEqual(shown, .init(departed: 3, current: 6, next: 3, hiddenCurrent: 0))
+    }
+
+    func testTightSpaceGoesToTheRunnersWhoHaveNotStarted() {
+        let shown = StartSchedule.rowAllocation(fitting: 4, departed: 3, current: 6, next: 3)
+        XCTAssertEqual(shown.current, 4, "the group in focus takes the space first")
+        XCTAssertEqual(shown.next, 0)
+        XCTAssertEqual(shown.departed, 0, "names of runners already out on the course go first")
+        XCTAssertEqual(shown.hiddenCurrent, 2, "and the crew is told how many are missing")
+    }
+
+    func testOneRowOfRoomStillShowsSomething() {
+        let shown = StartSchedule.rowAllocation(fitting: 0, departed: 3, current: 5, next: 3)
+        XCTAssertEqual(shown.current, 1)
+        XCTAssertEqual(shown.hiddenCurrent, 4)
+    }
+
+    func testSpareRoomGoesToTheNextGroupBeforeTheDepartedOne() {
+        let shown = StartSchedule.rowAllocation(fitting: 8, departed: 3, current: 6, next: 3)
+        XCTAssertEqual(shown.current, 6)
+        XCTAssertEqual(shown.next, 2)
+        XCTAssertEqual(shown.departed, 0)
     }
 }

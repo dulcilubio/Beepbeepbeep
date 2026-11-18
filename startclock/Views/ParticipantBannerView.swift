@@ -8,10 +8,28 @@ struct ParticipantBannerView: View {
     let showSeconds: Bool
     /// Multiplier from Settings — the start crew reads this from a few metres away.
     let scale: Double
+    /// Height the banner may take without starving the clock.
+    let maxHeight: CGFloat
 
     @EnvironmentObject var settings: AppSettings
 
     private var textColor: Color { settings.invertedMode ? .black : .white }
+
+    private var rowHeight:  CGFloat { nameSize * 1.3 + 4 * scale }
+    /// Padding, the two separators and the "+N more" line — everything that is
+    /// not a row. Reserved whether or not that line shows, so a mis-estimate
+    /// leaves the banner too short rather than over the clock.
+    private var chromeHeight: CGFloat { 36 * scale + 1 + classSize * 1.3 + 2 * scale }
+
+    private var allocation: StartSchedule.RowAllocation {
+        let fits = Int((maxHeight - chromeHeight) / max(rowHeight, 1))
+        return StartSchedule.rowAllocation(
+            fitting: fits,
+            departed: departed.count,
+            current: current.count,
+            next: next.count
+        )
+    }
 
     private var nameSize:   CGFloat { 15 * scale }
     private var classSize:  CGFloat { 13 * scale }
@@ -19,21 +37,30 @@ struct ParticipantBannerView: View {
     private var classWidth: CGFloat { 90 * scale }
 
     var body: some View {
+        let shown = allocation
+
         VStack(alignment: .leading, spacing: 0) {
 
             // ── Already gone ──────────────────────────────────────────
-            if !departed.isEmpty {
-                rows(Array(departed.suffix(3)), dim: departedOpacity)
+            if shown.departed > 0 {
+                rows(Array(departed.suffix(shown.departed)), dim: departedOpacity)
                 separator
             }
 
             // ── In focus ──────────────────────────────────────────────
-            rows(Array(current.prefix(6)), dim: 1.0)
+            rows(Array(current.prefix(shown.current)), dim: 1.0)
+
+            if shown.hiddenCurrent > 0 {
+                Text("+\(shown.hiddenCurrent) more")
+                    .font(.system(size: classSize, weight: .medium, design: .monospaced))
+                    .foregroundStyle(.secondary)
+                    .padding(.top, 2 * scale)
+            }
 
             // ── After that ────────────────────────────────────────────
-            if !next.isEmpty {
+            if shown.next > 0 {
                 separator
-                rows(Array(next.prefix(3)), dim: 0.55)
+                rows(Array(next.prefix(shown.next)), dim: 0.55)
             }
         }
         .padding(.horizontal, 14 * scale)
