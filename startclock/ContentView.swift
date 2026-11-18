@@ -156,24 +156,17 @@ struct ContentView: View {
     private func computeWindowedStarters(for date: Date)
         -> (prev: [StartEntry], curr: [StartEntry], next: [StartEntry])
     {
-        let entries = activeEntries
-        guard !entries.isEmpty else { return ([], [], []) }
-
-        let cal      = Calendar.current
-        let secs     = Int(date.timeIntervalSince(cal.startOfDay(for: date)))
-        // Use 60 s as the window size in auto mode (align to whole minutes)
-        let interval = settings.startInterval > 0 ? settings.startInterval : 60
-        let winStart = (secs / interval) * interval
-
-        func window(_ lo: Int, _ hi: Int) -> [StartEntry] {
-            entries.filter { ($0.startSeconds ?? -1) >= lo && ($0.startSeconds ?? -1) < hi }
-        }
-
-        return (
-            prev: window(winStart - interval, winStart),
-            curr: window(winStart,            winStart + interval),
-            next: window(winStart + interval,  winStart + 2 * interval)
+        let windows = StartSchedule.windows(
+            entries: activeEntries,
+            secondsFromMidnight: Self.secondsFromMidnight(date),
+            interval: settings.startInterval
         )
+        return (windows.previous, windows.current, windows.next)
+    }
+
+    private static func secondsFromMidnight(_ date: Date) -> Int {
+        let cal = Calendar.current
+        return Int(date.timeIntervalSince(cal.startOfDay(for: date)))
     }
 
     private var activeEntries: [StartEntry] {
@@ -192,32 +185,13 @@ struct ContentView: View {
 
     // MARK: - Highlight
 
-    /// Single source of truth for the clock colour and the beeps.
-    /// Fixed interval: derived from epoch seconds. Auto (0): derived from the
-    /// actual start times in the loaded list.
     private func computeHighlight(for date: Date) -> ClockHighlight {
-        let interval = settings.startInterval
-
-        if interval > 0 {
-            let pos = Int(date.timeIntervalSince1970) % interval
-            if pos == 0 { return .go }
-            return interval - pos <= 5 ? .warning : .none
-        }
-
-        let entries = activeEntries
-        guard !entries.isEmpty else { return .none }
-        let cal  = Calendar.current
-        let secs = Int(date.timeIntervalSince(cal.startOfDay(for: date)))
-        var warning = false
-        for entry in entries {
-            guard let s = entry.startSeconds else { continue }
-            let diff = s - secs
-            // A start at this exact second wins over a countdown for a later one,
-            // so keep scanning instead of returning on the first match.
-            if diff == 0 { return .go }
-            if diff > 0, diff <= 5 { warning = true }
-        }
-        return warning ? .warning : .none
+        StartSchedule.highlight(
+            entries: activeEntries,
+            secondsFromMidnight: Self.secondsFromMidnight(date),
+            epochSeconds: Int(date.timeIntervalSince1970),
+            interval: settings.startInterval
+        )
     }
 
     // MARK: - Beep scheduling

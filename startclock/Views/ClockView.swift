@@ -1,15 +1,6 @@
 import SwiftUI
 import UIKit
 
-/// Which highlight the clock should use for the current instant.
-/// Resolved by ContentView so that fixed-interval and auto (start-list) modes
-/// share one source of truth with the beep scheduler.
-enum ClockHighlight {
-    case none      // ordinary tick
-    case warning   // within 5 s before a start
-    case go        // exactly on a start
-}
-
 struct ClockView: View {
     @EnvironmentObject var settings: AppSettings
     let date: Date

@@ -7,18 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0143B207DB639AB0F8179E0A /* TimeSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92072EDEC1DA6F2141DDE2 /* TimeSyncTests.swift */; };
 		041771D632F3CD605CE993A1 /* ParticipantBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A5F3685BA4F0C771D38E3B /* ParticipantBannerView.swift */; };
 		0E19AB31476385498F02E450 /* SevenSegmentClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB389B17DFD5AFE00F73C8 /* SevenSegmentClockView.swift */; };
+		1A06D4A924F6B022DE6D979F /* StartListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F79889581C95134881E4EBE /* StartListTests.swift */; };
+		2156CC95867172CC8ABAF5E9 /* JSONRepair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06EECB0562EB51265387DCDC /* JSONRepair.swift */; };
 		2A85E927FC80C0BF38D2A385 /* SelectCompetitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E22AB4EA072D1DF2333B3B /* SelectCompetitionView.swift */; };
 		351CB743FEAF5ACFE250FB55 /* CompetitionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37846BF55EAEFC04EF4E7539 /* CompetitionPickerView.swift */; };
 		3711D3741122C064FCE66459 /* EventorBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060C3A875F879955AC000972 /* EventorBrowserView.swift */; };
 		3AC1DC74B6A65C6E2D5C9690 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBC55EFC92382A78158DA2A2 /* Assets.xcassets */; };
+		3B41E05A69563A903716CCA9 /* StartSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = F336D33E257886286245E4DD /* StartSchedule.swift */; };
 		514BA7CF49D229AD2E562C0C /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A03C8276CDA8910C868052 /* AudioManager.swift */; };
 		5B44A0B44F9228BC630DD5E0 /* ClassSelectionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A228474C4A928575E81B5C /* ClassSelectionList.swift */; };
 		6073BF76C537E029BD820B1C /* GNSSTimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8DD2D6431C288E5369E819 /* GNSSTimeManager.swift */; };
 		79E045875AC7D05D711A108F /* LiveResultatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE0945179A9E9F8C26191E /* LiveResultatManager.swift */; };
 		7CE23FACBDDC5EEF1992B133 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE77E96E0DF73AE27680F5E /* ContentView.swift */; };
 		80065AEA82D7122A070530B8 /* StartList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35E5782A6FD339E4B555C11 /* StartList.swift */; };
+		999D7E60BBF3523DD2E656C1 /* JSONRepairTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476896A118B9C48190305E8A /* JSONRepairTests.swift */; };
 		9DD34E23E0171FC528DBEBFF /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773578700309145656708CC5 /* ClockView.swift */; };
 		9F7F3F2161B6B178123E6091 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D34F80DC5CA012EE027296 /* AppSettings.swift */; };
 		A0F960624EEBEFC06D52BCC0 /* AnalogClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C71EAC1ADEA02B42B8BEC9 /* AnalogClockView.swift */; };
@@ -28,19 +33,34 @@
 		B59330B7E18CBC78900AE013 /* NTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A11DE5CDD6CB8487A0F8091 /* NTPClient.swift */; };
 		D32E5D90EF2E5AEBA385BD4E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB3D78665FEEF1BF19F56D4 /* SettingsView.swift */; };
 		E8A2486C7A702ADDF6C5E6B3 /* ControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F26B359B1AB1E3E8DD8BC7 /* ControlsView.swift */; };
+		F73D3329BD2761FE92472576 /* StartScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB81E65C10D4F539ECCC0AC0 /* StartScheduleTests.swift */; };
 		FA896CCC75317DF5B31B35EA /* startclockApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2E3A1E6C23300A6DA8340 /* startclockApp.swift */; };
 		FCB4DE2DEBF4C69B7344F52F /* FlapClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C475DEA465A98DDF8FA1127 /* FlapClockView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		764CA12C1672C16184E5D4FE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5D4AB9D54275F5008EA4B6E1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 09D476E28284355AFEAD2537;
+			remoteInfo = startclock;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		060C3A875F879955AC000972 /* EventorBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventorBrowserView.swift; sourceTree = "<group>"; };
+		06EECB0562EB51265387DCDC /* JSONRepair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONRepair.swift; sourceTree = "<group>"; };
 		0EEE0945179A9E9F8C26191E /* LiveResultatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveResultatManager.swift; sourceTree = "<group>"; };
 		11862F09879A4AF47FD85008 /* EventorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventorManager.swift; sourceTree = "<group>"; };
 		37846BF55EAEFC04EF4E7539 /* CompetitionPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionPickerView.swift; sourceTree = "<group>"; };
+		3A28F9EBE3073BE9B5BFBB91 /* startclockTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = startclockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		476896A118B9C48190305E8A /* JSONRepairTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONRepairTests.swift; sourceTree = "<group>"; };
 		47A5F3685BA4F0C771D38E3B /* ParticipantBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantBannerView.swift; sourceTree = "<group>"; };
 		47F5B2DDD9813FE92EC0C2EA /* EventorImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventorImportView.swift; sourceTree = "<group>"; };
 		49E2E3A1E6C23300A6DA8340 /* startclockApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = startclockApp.swift; sourceTree = "<group>"; };
-		517C0686804D0A3E1A763060 /* startclock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = startclock.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F79889581C95134881E4EBE /* StartListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartListTests.swift; sourceTree = "<group>"; };
+		517C0686804D0A3E1A763060 /* startclock.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = startclock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A40EC5E3C3DD70CDC7B123 /* StatusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
 		59D34F80DC5CA012EE027296 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		69C71EAC1ADEA02B42B8BEC9 /* AnalogClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalogClockView.swift; sourceTree = "<group>"; };
@@ -50,13 +70,16 @@
 		8FE77E96E0DF73AE27680F5E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9A11DE5CDD6CB8487A0F8091 /* NTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NTPClient.swift; sourceTree = "<group>"; };
 		9CB3D78665FEEF1BF19F56D4 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		AA92072EDEC1DA6F2141DDE2 /* TimeSyncTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSyncTests.swift; sourceTree = "<group>"; };
 		C35E5782A6FD339E4B555C11 /* StartList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartList.swift; sourceTree = "<group>"; };
 		C5A228474C4A928575E81B5C /* ClassSelectionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassSelectionList.swift; sourceTree = "<group>"; };
 		D0CB389B17DFD5AFE00F73C8 /* SevenSegmentClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenSegmentClockView.swift; sourceTree = "<group>"; };
+		DB81E65C10D4F539ECCC0AC0 /* StartScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartScheduleTests.swift; sourceTree = "<group>"; };
 		DBC55EFC92382A78158DA2A2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EA8DD2D6431C288E5369E819 /* GNSSTimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GNSSTimeManager.swift; sourceTree = "<group>"; };
 		F1F26B359B1AB1E3E8DD8BC7 /* ControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsView.swift; sourceTree = "<group>"; };
 		F2A03C8276CDA8910C868052 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		F336D33E257886286245E4DD /* StartSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSchedule.swift; sourceTree = "<group>"; };
 		F7E22AB4EA072D1DF2333B3B /* SelectCompetitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCompetitionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -65,15 +88,29 @@
 			isa = PBXGroup;
 			children = (
 				4E4D718B175C6365685CEF0F /* startclock */,
+				2FD398EA2116A797921D3F0C /* startclockTests */,
 				9AE6407D7D46EAB0FE1D1A5D /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		2FD398EA2116A797921D3F0C /* startclockTests */ = {
+			isa = PBXGroup;
+			children = (
+				476896A118B9C48190305E8A /* JSONRepairTests.swift */,
+				4F79889581C95134881E4EBE /* StartListTests.swift */,
+				DB81E65C10D4F539ECCC0AC0 /* StartScheduleTests.swift */,
+				AA92072EDEC1DA6F2141DDE2 /* TimeSyncTests.swift */,
+			);
+			path = startclockTests;
 			sourceTree = "<group>";
 		};
 		331D5C6D36E2A70FBA28B1FF /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				59D34F80DC5CA012EE027296 /* AppSettings.swift */,
+				06EECB0562EB51265387DCDC /* JSONRepair.swift */,
 				C35E5782A6FD339E4B555C11 /* StartList.swift */,
+				F336D33E257886286245E4DD /* StartSchedule.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -108,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				517C0686804D0A3E1A763060 /* startclock.app */,
+				3A28F9EBE3073BE9B5BFBB91 /* startclockTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -153,6 +191,24 @@
 			productReference = 517C0686804D0A3E1A763060 /* startclock.app */;
 			productType = "com.apple.product-type.application";
 		};
+		F054267B0C2808A5E6F07143 /* startclockTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 93426E069DE75F9960B6B92C /* Build configuration list for PBXNativeTarget "startclockTests" */;
+			buildPhases = (
+				B272B850F1EC202542A43A2A /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F990EAEF97B08868C9FA0FEA /* PBXTargetDependency */,
+			);
+			name = startclockTests;
+			packageProductDependencies = (
+			);
+			productName = startclockTests;
+			productReference = 3A28F9EBE3073BE9B5BFBB91 /* startclockTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -163,6 +219,11 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					09D476E28284355AFEAD2537 = {
+						DevelopmentTeam = 83NLQQ5KF5;
+						ProvisioningStyle = Automatic;
+					};
+					F054267B0C2808A5E6F07143 = {
+						DevelopmentTeam = 83NLQQ5KF5;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -182,6 +243,7 @@
 			projectRoot = "";
 			targets = (
 				09D476E28284355AFEAD2537 /* startclock */,
+				F054267B0C2808A5E6F07143 /* startclockTests */,
 			);
 		};
 /* End PBXProject section */
@@ -215,6 +277,7 @@
 				A8EFB8EAEADF416718E6CB53 /* EventorManager.swift in Sources */,
 				FCB4DE2DEBF4C69B7344F52F /* FlapClockView.swift in Sources */,
 				6073BF76C537E029BD820B1C /* GNSSTimeManager.swift in Sources */,
+				2156CC95867172CC8ABAF5E9 /* JSONRepair.swift in Sources */,
 				79E045875AC7D05D711A108F /* LiveResultatManager.swift in Sources */,
 				B59330B7E18CBC78900AE013 /* NTPClient.swift in Sources */,
 				041771D632F3CD605CE993A1 /* ParticipantBannerView.swift in Sources */,
@@ -222,12 +285,32 @@
 				D32E5D90EF2E5AEBA385BD4E /* SettingsView.swift in Sources */,
 				0E19AB31476385498F02E450 /* SevenSegmentClockView.swift in Sources */,
 				80065AEA82D7122A070530B8 /* StartList.swift in Sources */,
+				3B41E05A69563A903716CCA9 /* StartSchedule.swift in Sources */,
 				AF158694BBF5311DC73D84A2 /* StatusBarView.swift in Sources */,
 				FA896CCC75317DF5B31B35EA /* startclockApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B272B850F1EC202542A43A2A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				999D7E60BBF3523DD2E656C1 /* JSONRepairTests.swift in Sources */,
+				1A06D4A924F6B022DE6D979F /* StartListTests.swift in Sources */,
+				F73D3329BD2761FE92472576 /* StartScheduleTests.swift in Sources */,
+				0143B207DB639AB0F8179E0A /* TimeSyncTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F990EAEF97B08868C9FA0FEA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 09D476E28284355AFEAD2537 /* startclock */;
+			targetProxy = 764CA12C1672C16184E5D4FE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1A0A3748AA4E683701AF4DDF /* Release */ = {
@@ -235,7 +318,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 257V44642S;
 				INFOPLIST_FILE = startclock/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -251,7 +333,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 257V44642S;
 				INFOPLIST_FILE = startclock/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -334,6 +415,42 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
+		};
+		358F0CBD564CBE54FC54A1BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = se.erikfrick.startclock.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/startclock.app/startclock";
+			};
+			name = Debug;
+		};
+		8F241BA101D40F1E9340A292 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = se.erikfrick.startclock.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/startclock.app/startclock";
+			};
+			name = Release;
 		};
 		935106512F44372CB67FD12D /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -418,6 +535,15 @@
 			buildConfigurations = (
 				30CF5220A5A21AAA853841F2 /* Debug */,
 				935106512F44372CB67FD12D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		93426E069DE75F9960B6B92C /* Build configuration list for PBXNativeTarget "startclockTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				358F0CBD564CBE54FC54A1BE /* Debug */,
+				8F241BA101D40F1E9340A292 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

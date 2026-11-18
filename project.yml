@@ -49,3 +49,20 @@ targets:
         UIApplicationSupportsIndirectInputEvents: YES
         UIBackgroundModes:
           - audio
+    scheme:
+      testTargets:
+        - startclockTests
+
+  startclockTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: startclockTests
+    dependencies:
+      - target: startclock
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: se.erikfrick.startclock.tests
+        # The app's Info.plist must not be inherited by the test bundle.
+        INFOPLIST_FILE: ""
+        GENERATE_INFOPLIST_FILE: YES

@@ -310,7 +310,8 @@ class EventorManager: ObservableObject {
 
     // MARK: - HTML parsing
 
-    private static func parseStartList(html: String, name: inout String) -> [StartEntry] {
+    /// Internal and nonisolated so the HTML parsing can be tested directly.
+    nonisolated static func parseStartList(html: String, name: inout String) -> [StartEntry] {
         // Extract <title>
         if let m = try? NSRegularExpression(pattern: "<title>([^<]+)</title>", options: .caseInsensitive)
             .firstMatch(in: html, range: NSRange(html.startIndex..., in: html)),
@@ -394,7 +395,7 @@ class EventorManager: ObservableObject {
         return entries
     }
 
-    private static func extractCells(from rowHTML: String) -> [String] {
+    nonisolated private static func extractCells(from rowHTML: String) -> [String] {
         let pattern = try! NSRegularExpression(
             pattern: #"<td[^>]*>(.*?)</td>"#,
             options: [.caseInsensitive, .dotMatchesLineSeparators]
@@ -406,7 +407,7 @@ class EventorManager: ObservableObject {
             }
     }
 
-    private static func stripTags(_ html: String) -> String {
+    nonisolated private static func stripTags(_ html: String) -> String {
         var s = html
         s = s.replacingOccurrences(of: "<[^>]+>", with: " ", options: .regularExpression)
         let entities: [String: String] = [
@@ -418,7 +419,7 @@ class EventorManager: ObservableObject {
         return s.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    private static func timeToCentisecs(_ t: String) -> Int? {
+    nonisolated static func timeToCentisecs(_ t: String) -> Int? {
         let parts = t.split(separator: ":").compactMap { Int($0) }
         guard parts.count >= 2 else { return nil }
         let h = parts[0], m = parts[1], s = parts.count > 2 ? parts[2] : 0

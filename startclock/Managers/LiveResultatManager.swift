@@ -192,7 +192,7 @@ class LiveResultatManager: ObservableObject {
         guard let url = URL(string: "\(Self.base)?method=getcompetitions") else { return }
         do {
             let (rawData, _) = try await URLSession.shared.data(from: url)
-            let data = Self.sanitizeJSON(rawData)
+            let data = JSONRepair.sanitize(rawData)
             print("[LR] getcompetitions raw:", String(data: data, encoding: .utf8)?.prefix(300) ?? "nil")
             let response = try JSONDecoder().decode(CompetitionsResponse.self, from: data)
             let today = Self.todayString()
@@ -204,20 +204,6 @@ class LiveResultatManager: ObservableObject {
             print("[LR] fetchCompetitions error:", error)
             self.error = error.localizedDescription
         }
-    }
-
-    private static func sanitizeJSON(_ data: Data) -> Data {
-        // Strip unescaped control characters (0x00–0x1F) except tab/newline/CR which
-        // the liveresultat API occasionally embeds in string values.
-        let allowed = CharacterSet.controlCharacters.subtracting(
-            CharacterSet(charactersIn: "\n\r")
-        )
-        guard let str = String(data: data, encoding: .utf8),
-              str.unicodeScalars.contains(where: { allowed.contains($0) }) else {
-            return data
-        }
-        let cleaned = String(str.unicodeScalars.filter { !allowed.contains($0) })
-        return cleaned.data(using: .utf8) ?? data
     }
 
     private static func todayString() -> String {
@@ -233,7 +219,8 @@ class LiveResultatManager: ObservableObject {
 
         guard let url = URL(string: "\(Self.base)?comp=\(compId)&method=getclasses") else { return }
         do {
-            let (data, _) = try await URLSession.shared.data(from: url)
+            let (rawData, _) = try await URLSession.shared.data(from: url)
+            let data = JSONRepair.sanitize(rawData)
             let response = try JSONDecoder().decode(ClassesResponse.self, from: data)
             classes = response.classes
         } catch {
@@ -248,10 +235,12 @@ class LiveResultatManager: ObservableObject {
         if let h = lastHash { urlStr += "&last_hash=\(h)" }
 
         guard let url = URL(string: urlStr) else { return }
-        guard let (data, _) = try? await URLSession.shared.data(from: url) else {
+        guard let (rawData, _) = try? await URLSession.shared.data(from: url) else {
             print("[LR] network error for class:", className)
             return
         }
+        // Runner and club names carry the same stray quotes as competition names.
+        let data = JSONRepair.sanitize(rawData)
 
         // Check for NOT MODIFIED
         if let statusOnly = try? JSONDecoder().decode(StatusResponse.self, from: data),
