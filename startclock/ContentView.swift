@@ -38,13 +38,13 @@ struct ContentView: View {
                     if settings.gaFramTidEnabled {
                         VStack(spacing: 2) {
                             Text("GÅ-FRAM-TID")
-                                .font(.system(size: 20, weight: .semibold, design: .monospaced))
-                                .foregroundStyle(.yellow)
+                                .font(.system(size: 20, weight: .bold, design: .monospaced))
+                                .foregroundStyle(settings.highlightColor)
                                 .tracking(2)
                             if settings.gaFramTidOffsetMin > 0 {
                                 Text("+\(settings.gaFramTidOffsetMin) min")
-                                    .font(.system(size: 14, weight: .medium, design: .monospaced))
-                                    .foregroundStyle(.yellow.opacity(0.75))
+                                    .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                                    .foregroundStyle(settings.highlightColor)
                             }
                         }
                     }

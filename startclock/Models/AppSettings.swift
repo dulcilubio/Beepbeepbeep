@@ -42,6 +42,39 @@ class AppSettings: ObservableObject {
     @AppStorage("bannerTextScale")           var bannerTextScale: Double  = 1.0
     static let bannerScaleRange: ClosedRange<Double> = 0.8...3.0
 
+    // MARK: - Palette
+    //
+    // Picked per mode rather than dimmed with opacity. The yellow that carries
+    // on black is unreadable on white, and a faded tint of it is worse — this
+    // screen is read from several metres away, outdoors, in daylight.
+
+    /// Start times and the lead-time label.
+    var highlightColor: Color {
+        invertedMode
+            ? Color(red: 0.58, green: 0.32, blue: 0.00)   // dark amber on white
+            : Color(red: 1.00, green: 0.85, blue: 0.10)   // bright yellow on black
+    }
+
+    var primaryTextColor: Color { invertedMode ? .black : .white }
+
+    /// Classes and other supporting text — still has to be legible, so it is a
+    /// defined grey rather than SwiftUI's .secondary.
+    var secondaryTextColor: Color {
+        invertedMode ? Color(white: 0.26) : Color(white: 0.84)
+    }
+
+    var warningColor: Color {
+        invertedMode ? Color(red: 0.72, green: 0.33, blue: 0.00) : .orange
+    }
+
+    var alertColor: Color {
+        invertedMode ? Color(red: 0.74, green: 0.00, blue: 0.00) : .red
+    }
+
+    var panelBackground: Color { invertedMode ? .white : Color(white: 0.08) }
+    var panelBorder: Color     { highlightColor.opacity(invertedMode ? 0.85 : 0.7) }
+    var separatorColor: Color  { primaryTextColor.opacity(0.25) }
+
     var clockStyle: ClockStyle {
         get { ClockStyle(rawValue: clockFont) ?? .sfpro }
         set { clockFont = newValue.rawValue }

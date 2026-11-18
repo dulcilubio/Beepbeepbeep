@@ -24,7 +24,7 @@ struct StatusBarView: View {
                     if gnss.syncStatus == .driftWarning {
                         Text("DRIFT")
                             .font(.system(size: 11, weight: .bold, design: .monospaced))
-                            .foregroundStyle(.orange)
+                            .foregroundStyle(settings.warningColor)
                     }
                     if settings.fakeTimeEnabled {
                         Text("TEST")
@@ -36,12 +36,12 @@ struct StatusBarView: View {
                         // more than a second — say so, and by how much.
                         Text(correctionLabel)
                             .font(.system(size: 11, weight: .bold, design: .monospaced))
-                            .foregroundStyle(.orange)
+                            .foregroundStyle(settings.warningColor)
                     }
                     if audioAlert {
                         Text("NO AUDIO")
                             .font(.system(size: 11, weight: .bold, design: .monospaced))
-                            .foregroundStyle(.red)
+                            .foregroundStyle(settings.alertColor)
                     }
                 }
 
@@ -49,16 +49,16 @@ struct StatusBarView: View {
 
                 if settings.gaFramTidEnabled && settings.gaFramTidOffsetMin > 0 {
                     Text("+\(settings.gaFramTidOffsetMin) min")
-                        .font(.system(size: 13, weight: .medium, design: .monospaced))
-                        .foregroundStyle(.yellow)
+                        .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                        .foregroundStyle(settings.highlightColor)
                 }
             }
 
             // Competition / class name — centered, won't shift left/right elements
             if let centerText = centerLabel {
                 Text(centerText)
-                    .font(.system(size: 11, weight: .medium, design: .monospaced))
-                    .foregroundStyle(.secondary)
+                    .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                    .foregroundStyle(settings.secondaryTextColor)
                     .lineLimit(1)
                     .truncationMode(.tail)
                     .padding(.horizontal, 80) // keep clear of left/right items
@@ -95,12 +95,16 @@ struct StatusBarView: View {
         }
     }
 
+    /// Darker variants in inverted mode — plain green and yellow disappear
+    /// against white in sunlight.
     private var statusColor: Color {
         switch gnss.syncStatus {
-        case .acquiring:    return .yellow
-        case .synced:       return .green
-        case .driftWarning: return .orange
-        case .unavailable:  return .red
+        case .acquiring:    return settings.highlightColor
+        case .synced:       return settings.invertedMode
+                                ? Color(red: 0.00, green: 0.45, blue: 0.10)
+                                : .green
+        case .driftWarning: return settings.warningColor
+        case .unavailable:  return settings.alertColor
         }
     }
 }

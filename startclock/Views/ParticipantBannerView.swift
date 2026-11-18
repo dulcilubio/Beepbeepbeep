@@ -13,7 +13,6 @@ struct ParticipantBannerView: View {
 
     @EnvironmentObject var settings: AppSettings
 
-    private var textColor: Color { settings.invertedMode ? .black : .white }
 
     private var rowHeight:  CGFloat { nameSize * 1.3 + 4 * scale }
     /// Padding, the two separators and the "+N more" line — everything that is
@@ -52,23 +51,25 @@ struct ParticipantBannerView: View {
 
             if shown.hiddenCurrent > 0 {
                 Text("+\(shown.hiddenCurrent) more")
-                    .font(.system(size: classSize, weight: .medium, design: .monospaced))
-                    .foregroundStyle(.secondary)
+                    .font(.system(size: classSize, weight: .semibold, design: .monospaced))
+                    .foregroundStyle(settings.secondaryTextColor)
                     .padding(.top, 2 * scale)
             }
 
             // ── After that ────────────────────────────────────────────
             if shown.next > 0 {
                 separator
-                rows(Array(next.prefix(shown.next)), dim: 0.55)
+                rows(Array(next.prefix(shown.next)), dim: 0.78)
             }
         }
         .padding(.horizontal, 14 * scale)
         .padding(.vertical, 10 * scale)
-        .background(.ultraThinMaterial)
+        // A material background washes the text out; a solid panel keeps every
+        // row at full contrast against the screen behind it.
+        .background(settings.panelBackground)
         .overlay(
             RoundedRectangle(cornerRadius: 10)
-                .strokeBorder(Color.yellow.opacity(0.5), lineWidth: 1)
+                .strokeBorder(settings.panelBorder, lineWidth: 2)
         )
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
@@ -81,20 +82,20 @@ struct ParticipantBannerView: View {
             HStack(spacing: 0) {
                 Text(entry.startTimeString(showSeconds: showSeconds))
                     .font(.system(size: nameSize, weight: .bold, design: .monospaced))
-                    .foregroundStyle(.yellow)
+                    .foregroundStyle(settings.highlightColor)
                     .frame(width: timeWidth, alignment: .leading)
 
                 Text(entry.name.uppercased())
                     .font(.system(size: nameSize, weight: .semibold, design: .monospaced))
-                    .foregroundStyle(textColor)
+                    .foregroundStyle(settings.primaryTextColor)
                     .lineLimit(1)
                     .minimumScaleFactor(0.6)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 if !entry.className.isEmpty {
                     Text(entry.className)
-                        .font(.system(size: classSize, weight: .medium, design: .monospaced))
-                        .foregroundStyle(.secondary)
+                        .font(.system(size: classSize, weight: .semibold, design: .monospaced))
+                        .foregroundStyle(settings.secondaryTextColor)
                         .lineLimit(1)
                         .frame(width: classWidth, alignment: .trailing)
                 }
@@ -106,7 +107,7 @@ struct ParticipantBannerView: View {
 
     private var separator: some View {
         Rectangle()
-            .fill(Color.white.opacity(0.18))
+            .fill(settings.separatorColor)
             .frame(height: 0.5)
             .padding(.vertical, 4 * scale)
     }
