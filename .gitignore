@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Xcode — per-user state, never shared
+xcuserdata/
+*.xcuserdatad/
+startclock.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
