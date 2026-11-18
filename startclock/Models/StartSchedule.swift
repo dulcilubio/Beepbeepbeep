@@ -18,6 +18,20 @@ enum StartSchedule {
     /// How long before a start the countdown runs.
     static let countdownSeconds = 5
 
+    /// How long a departed group lingers, fading, before the banner belongs
+    /// entirely to the runners who have not gone yet.
+    static let departedFadeSeconds: Double = 8
+
+    /// What the participant banner shows right now.
+    struct BannerContent: Equatable {
+        var departed: [StartEntry] = []     // already gone — fading out
+        var departedOpacity: Double = 0
+        var current: [StartEntry] = []      // the group in focus
+        var next: [StartEntry] = []         // the one after that
+
+        var isEmpty: Bool { departed.isEmpty && current.isEmpty && next.isEmpty }
+    }
+
     /// Entries grouped into the previous, current and next interval window.
     static func windows(
         entries: [StartEntry],
@@ -26,21 +40,63 @@ enum StartSchedule {
     ) -> (previous: [StartEntry], current: [StartEntry], next: [StartEntry]) {
         guard !entries.isEmpty else { return ([], [], []) }
 
-        let size  = interval > 0 ? interval : autoWindowSeconds
-        let start = Int((Double(secondsFromMidnight) / Double(size)).rounded(.down)) * size
-
-        func window(_ lower: Int, _ upper: Int) -> [StartEntry] {
-            entries.filter { entry in
-                guard let s = entry.startSeconds else { return false }
-                return s >= lower && s < upper
-            }
-        }
+        let size  = windowSize(interval)
+        let start = windowStart(secondsFromMidnight, size: size)
 
         return (
-            previous: window(start - size, start),
-            current:  window(start, start + size),
-            next:     window(start + size, start + 2 * size)
+            previous: entries.filter { $0.starts(in: start - size ..< start) },
+            current:  entries.filter { $0.starts(in: start ..< start + size) },
+            next:     entries.filter { $0.starts(in: start + size ..< start + 2 * size) }
         )
+    }
+
+    /// With lead time on, the clock itself runs ahead, so the current window is
+    /// the group being called forward and stays in focus for the whole minute.
+    ///
+    /// With lead time off, the clock shows real time: the moment a group's
+    /// second passes they are running, and the banner belongs to the next
+    /// group. The departed names linger briefly, fading, so the start crew can
+    /// still check who went.
+    static func banner(
+        entries: [StartEntry],
+        secondsFromMidnight: Int,
+        interval: Int,
+        leadTimeEnabled: Bool
+    ) -> BannerContent {
+        guard !entries.isEmpty else { return BannerContent() }
+
+        let size  = windowSize(interval)
+        let start = windowStart(secondsFromMidnight, size: size)
+
+        if leadTimeEnabled {
+            let w = windows(entries: entries, secondsFromMidnight: secondsFromMidnight, interval: interval)
+            return BannerContent(
+                departed: w.previous,
+                departedOpacity: 0.38,
+                current: w.current,
+                next: w.next
+            )
+        }
+
+        let elapsed  = Double(secondsFromMidnight - start)
+        let progress = min(max(elapsed / departedFadeSeconds, 0), 1)
+        let opacity  = 0.7 * (1 - progress)
+        let departed = opacity > 0 ? entries.filter { $0.starts(in: start ..< start + size) } : []
+
+        return BannerContent(
+            departed: departed,
+            departedOpacity: opacity,
+            current: entries.filter { $0.starts(in: start + size ..< start + 2 * size) },
+            next:    entries.filter { $0.starts(in: start + 2 * size ..< start + 3 * size) }
+        )
+    }
+
+    private static func windowSize(_ interval: Int) -> Int {
+        interval > 0 ? interval : autoWindowSeconds
+    }
+
+    private static func windowStart(_ seconds: Int, size: Int) -> Int {
+        Int((Double(seconds) / Double(size)).rounded(.down)) * size
     }
 
     /// Fixed interval: derived from epoch seconds, so the grid is independent of
@@ -68,5 +124,12 @@ enum StartSchedule {
             if remaining > 0, remaining <= countdownSeconds { warning = true }
         }
         return warning ? .warning : .none
+    }
+}
+
+private extension StartEntry {
+    func starts(in range: Range<Int>) -> Bool {
+        guard let start = startSeconds else { return false }
+        return range.contains(start)
     }
 }

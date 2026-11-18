@@ -97,6 +97,24 @@ struct SettingsView: View {
                 Text("Liveresultat or Eventor start list")
                     .font(.caption).foregroundStyle(.secondary)
             }
+            VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    Text("Name size")
+                    Spacer()
+                    Text(String(format: "%.1f×", settings.bannerTextScale))
+                        .foregroundStyle(.secondary)
+                        .monospacedDigit()
+                }
+                HStack(spacing: 10) {
+                    Text("A").font(.caption).foregroundStyle(.secondary)
+                    Slider(
+                        value: $settings.bannerTextScale,
+                        in: AppSettings.bannerScaleRange,
+                        step: 0.1
+                    )
+                    Text("A").font(.title3).foregroundStyle(.secondary)
+                }
+            }
         } header: {
             Text("Start list")
         } footer: {

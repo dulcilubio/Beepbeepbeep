@@ -7,15 +7,14 @@ struct ContentView: View {
     @EnvironmentObject var eventor: EventorManager
 
     @State private var now: Date = Date()
-    @State private var prevStarters: [StartEntry]    = []
-    @State private var currentStarters: [StartEntry] = []
-    @State private var nextStarters: [StartEntry]    = []
+    @State private var banner = StartSchedule.BannerContent()
     @State private var highlight: ClockHighlight     = .none
     @State private var showSettings = false
     @State private var lastBeepSecond: Int = -1
     @State private var showDeniedAlert = false
     @State private var chromaVisible = true
     @State private var hideWorkItem: DispatchWorkItem?
+    @State private var pinchBaseScale: Double?
 
     @StateObject private var audio = AudioManager()
     private let timer = Timer.publish(every: 0.05, on: .main, in: .common).autoconnect()
@@ -54,16 +53,34 @@ struct ContentView: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-                if !prevStarters.isEmpty || !currentStarters.isEmpty || !nextStarters.isEmpty {
+                if !banner.isEmpty {
                     ParticipantBannerView(
-                        previous: prevStarters,
-                        current:  currentStarters,
-                        next:     nextStarters,
-                        showSeconds: showsSeconds
+                        departed: banner.departed,
+                        departedOpacity: banner.departedOpacity,
+                        current:  banner.current,
+                        next:     banner.next,
+                        showSeconds: showsSeconds,
+                        scale: settings.bannerTextScale
                     )
                     .padding(.horizontal, 16)
                     .padding(.bottom, 8)
                     .transition(.opacity)
+                    // Pinch the names to resize them on the spot — the clock
+                    // gives up the height, so this sizes both at once.
+                    .gesture(
+                        MagnificationGesture()
+                            .onChanged { magnification in
+                                let base = pinchBaseScale ?? settings.bannerTextScale
+                                if pinchBaseScale == nil { pinchBaseScale = base }
+                                settings.bannerTextScale = clampedScale(base * magnification)
+                            }
+                            .onEnded { _ in
+                                // Snap to the same steps the slider uses.
+                                settings.bannerTextScale =
+                                    clampedScale((settings.bannerTextScale * 10).rounded() / 10)
+                                pinchBaseScale = nil
+                            }
+                    )
                 }
                 // No bottom reservation — controls overlay floats on top of the banner.
             }
@@ -116,7 +133,12 @@ struct ContentView: View {
             } else {
                 now = real
             }
-            (prevStarters, currentStarters, nextStarters) = computeWindowedStarters(for: now)
+            banner = StartSchedule.banner(
+                entries: activeEntries,
+                secondsFromMidnight: Self.secondsFromMidnight(now),
+                interval: settings.startInterval,
+                leadTimeEnabled: settings.gaFramTidEnabled
+            )
             highlight = computeHighlight(for: now)
             scheduleBeepsIfNeeded(for: now, highlight: highlight)
         }
@@ -138,6 +160,11 @@ struct ContentView: View {
         (settings.beepEnabled && !audio.isReady) || gnss.hasLargeCorrection
     }
 
+    private func clampedScale(_ value: Double) -> Double {
+        min(max(value, AppSettings.bannerScaleRange.lowerBound),
+            AppSettings.bannerScaleRange.upperBound)
+    }
+
     // MARK: - Chroma auto-hide
 
     private func wakeChroma() {
@@ -157,17 +184,6 @@ struct ContentView: View {
     }
 
     // MARK: - Starters
-
-    private func computeWindowedStarters(for date: Date)
-        -> (prev: [StartEntry], curr: [StartEntry], next: [StartEntry])
-    {
-        let windows = StartSchedule.windows(
-            entries: activeEntries,
-            secondsFromMidnight: Self.secondsFromMidnight(date),
-            interval: settings.startInterval
-        )
-        return (windows.previous, windows.current, windows.next)
-    }
 
     private static func secondsFromMidnight(_ date: Date) -> Int {
         let cal = Calendar.current

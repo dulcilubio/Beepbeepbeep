@@ -38,6 +38,10 @@ class AppSettings: ObservableObject {
     @AppStorage("clockFont")                 var clockFont: String        = "sfpro"
     @AppStorage("clockBold")                 var clockBold: Bool          = true
 
+    // Start list text size, 1.0 = the original 15 pt rows.
+    @AppStorage("bannerTextScale")           var bannerTextScale: Double  = 1.0
+    static let bannerScaleRange: ClosedRange<Double> = 0.8...3.0
+
     var clockStyle: ClockStyle {
         get { ClockStyle(rawValue: clockFont) ?? .sfpro }
         set { clockFont = newValue.rawValue }

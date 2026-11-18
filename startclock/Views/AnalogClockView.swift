@@ -33,9 +33,8 @@ struct AnalogClockView: View {
 
     var body: some View {
         GeometryReader { geo in
-            // Leave vertical room for the handle that protrudes above the case.
             let avail = min(geo.size.width, geo.size.height)
-            let size  = avail * 0.84     // square case edge length
+            let size  = avail * 0.92     // square case edge length
             let r     = size * 0.390     // clock-face radius
 
             ZStack {
@@ -47,14 +46,6 @@ struct AnalogClockView: View {
                         startPoint: .topLeading, endPoint: .bottomTrailing))
                     .frame(width: size, height: size)
                     .shadow(color: .black.opacity(0.40), radius: 14, x: 3, y: 6)
-
-                // ── Handle ───────────────────────────────────────────────
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(Color(white: 0.14))
-                    .frame(width: size * 0.30, height: size * 0.073)
-                    .overlay(RoundedRectangle(cornerRadius: 5)
-                        .strokeBorder(Color(white: 0.40), lineWidth: 1.2))
-                    .offset(y: -(size * 0.5 + size * 0.048))
 
                 // ── Chrome bezel ─────────────────────────────────────────
                 Circle()
