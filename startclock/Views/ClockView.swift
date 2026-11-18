@@ -1,9 +1,19 @@
 import SwiftUI
 import UIKit
 
+/// Which highlight the clock should use for the current instant.
+/// Resolved by ContentView so that fixed-interval and auto (start-list) modes
+/// share one source of truth with the beep scheduler.
+enum ClockHighlight {
+    case none      // ordinary tick
+    case warning   // within 5 s before a start
+    case go        // exactly on a start
+}
+
 struct ClockView: View {
     @EnvironmentObject var settings: AppSettings
     let date: Date
+    var highlight: ClockHighlight = .none
 
     private var components: (h: Int, m: Int, s: Int) {
         let cal = Calendar.current
@@ -15,13 +25,10 @@ struct ClockView: View {
     }
 
     private var clockColor: Color {
-        let pos = Int(date.timeIntervalSince1970) % settings.startInterval
-        if pos == 0 {
-            return .green
-        } else if settings.startInterval - pos <= 5 {
-            return .orange
-        } else {
-            return settings.invertedMode ? .black : .white
+        switch highlight {
+        case .go:      return .green
+        case .warning: return .orange
+        case .none:    return settings.invertedMode ? .black : .white
         }
     }
 
@@ -57,6 +64,43 @@ struct ClockView: View {
                 SevenSegmentClockView(timeString: timeStr, color: color)
             case "flapBoard":
                 FlapClockView(timeString: timeStr, color: color)
+            case "analog", "analogSeconds":
+                GeometryReader { geo in
+                    let secondsOnly = settings.clockFont == "analogSeconds"
+                    let fontSize = min(geo.size.height * 0.13, geo.size.width / 5.2)
+                    VStack(spacing: 4) {
+                        Text(timeStr)
+                            .font(.system(size: fontSize, weight: .bold, design: .monospaced))
+                            .monospacedDigit()
+                            .foregroundStyle(color)
+                            .lineLimit(1)
+                        AnalogClockView(date: date, secondsOnly: secondsOnly, accentColor: color)
+                    }
+                    .frame(width: geo.size.width, height: geo.size.height)
+                }
+            case "hourOnly", "minuteOnly", "secondOnly":
+                GeometryReader { geo in
+                    let bold = settings.clockBold
+                    // Two digits — roughly half the divisor of the full HH:MM:SS string
+                    let widthDivisor: CGFloat = bold ? 1.25 : 1.15
+                    let fontSize = min(geo.size.width / widthDivisor, geo.size.height * 0.92)
+                    let value: Int = {
+                        switch settings.clockFont {
+                        case "hourOnly":   return c.h
+                        case "minuteOnly": return c.m
+                        default:           return c.s
+                        }
+                    }()
+                    Text(String(format: "%02d", value))
+                        .font(.system(size: fontSize,
+                                      weight: bold ? .bold : .regular,
+                                      design: .monospaced))
+                        .monospacedDigit()
+                        .foregroundStyle(color)
+                        .minimumScaleFactor(0.88)
+                        .lineLimit(1)
+                        .frame(width: geo.size.width, height: geo.size.height)
+                }
             default:
                 GeometryReader { geo in
                     let bold = settings.clockBold

@@ -27,9 +27,16 @@ class AppSettings: ObservableObject {
     @AppStorage("gaFramTidEnabled")          var gaFramTidEnabled: Bool   = false
     @AppStorage("gaFramTidOffsetMin")        var gaFramTidOffsetMin: Int  = 3
 
+    // Testing / fake time
+    @AppStorage("fakeTimeEnabled")           var fakeTimeEnabled: Bool    = false
+    @AppStorage("fakeTimeHour")              var fakeTimeHour: Int        = 10
+    @AppStorage("fakeTimeMinute")            var fakeTimeMinute: Int      = 0
+
     // Display
     @AppStorage("invertedMode")              var invertedMode: Bool       = false
-    // "sfpro" | "sfCondensed" | "sfCompressed" | "newYork" | "courierNew" | "digital" | "flapBoard"
+    // "sfpro" | "sfCondensed" | "sfCompressed" | "newYork" | "courierNew"
+    // | "digital" | "flapBoard" | "analog" | "analogSeconds"
+    // | "hourOnly" | "minuteOnly" | "secondOnly"
     @AppStorage("clockFont")                 var clockFont: String        = "sfpro"
     @AppStorage("clockBold")                 var clockBold: Bool          = true
 }

@@ -2,7 +2,7 @@ name: startclock
 options:
   bundleIdPrefix: se.erikfrick
   deploymentTarget:
-    iOS: "17.0"
+    iOS: "16.0"
   xcodeVersion: "16"
 
 settings:
@@ -16,6 +16,11 @@ settings:
     ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
     DEVELOPMENT_TEAM: 83NLQQ5KF5
     CODE_SIGN_STYLE: Automatic
+    # Version lives here — Info.plist only references these. Bump
+    # MARKETING_VERSION for a release users see, CURRENT_PROJECT_VERSION for
+    # every upload (App Store Connect requires it to be unique per version).
+    MARKETING_VERSION: "1.1"
+    CURRENT_PROJECT_VERSION: "2"
 
 targets:
   startclock:
@@ -26,6 +31,9 @@ targets:
     info:
       path: startclock/Info.plist
       properties:
+        # Reference the build settings above so the version has one home.
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         UILaunchScreen:
           UIColorName: "LaunchBackground"
         UISupportedInterfaceOrientations:
