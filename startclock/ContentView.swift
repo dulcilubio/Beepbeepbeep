@@ -5,6 +5,7 @@ struct ContentView: View {
     @EnvironmentObject var gnss: GNSSTimeManager
     @EnvironmentObject var liveresultat: LiveResultatManager
     @EnvironmentObject var eventor: EventorManager
+    @EnvironmentObject var nowPlaying: NowPlayingManager
 
     @State private var now: Date = Date()
     @State private var banner = StartSchedule.BannerContent()
@@ -70,7 +71,7 @@ struct ContentView: View {
                         // Scaling the names up must never squeeze the clock —
                         // rows drop out instead. The 40 pt is the status strip.
                         maxHeight: max(0, geo.size.height
-                                          * (1 - Self.clockMinHeightFraction) - 40)
+                                          * (1 - Self.clockMinHeightFraction) - 92)
                     )
                     .padding(.horizontal, 16)
                     .padding(.bottom, 8)
@@ -92,7 +93,9 @@ struct ContentView: View {
                             }
                     )
                 }
-                // No bottom reservation — controls overlay floats on top of the banner.
+                // Reserve the control strip so the floating controls never land on a
+                // banner row.
+                Color.clear.frame(height: 52)
               }
             }
         }
@@ -156,7 +159,11 @@ struct ContentView: View {
         .onAppear {
             gnss.start()
             scheduleHide()
+            nowPlaying.start { settings.beepEnabled = $0 }
+            refreshNowPlaying()
         }
+        .onChange(of: nowPlayingSubtitle) { _ in refreshNowPlaying() }
+        .onChange(of: settings.beepEnabled) { _ in refreshNowPlaying() }
         .onDisappear {
             gnss.stop()
             hideWorkItem?.cancel()
@@ -174,6 +181,34 @@ struct ContentView: View {
     private func clampedScale(_ value: Double) -> Double {
         min(max(value, AppSettings.bannerScaleRange.lowerBound),
             AppSettings.bannerScaleRange.upperBound)
+    }
+
+    // MARK: - Lock Screen
+
+    /// The competition if one is loaded, so the entry says which clock this is
+    /// when several devices are running at the same event.
+    private var nowPlayingTitle: String {
+        if liveresultat.hasActiveCompetition, !liveresultat.savedCompName.isEmpty {
+            return liveresultat.savedCompName
+        }
+        if let name = eventor.importedList?.name, !name.isEmpty { return name }
+        return "Start clock"
+    }
+
+    private var nowPlayingSubtitle: String {
+        guard let next = banner.current.first,
+              let seconds = next.startSeconds
+        else { return "Running" }
+        return String(format: "Next start %02d:%02d:%02d",
+                      seconds / 3600, (seconds % 3600) / 60, seconds % 60)
+    }
+
+    private func refreshNowPlaying() {
+        nowPlaying.update(
+            title: nowPlayingTitle,
+            subtitle: nowPlayingSubtitle,
+            beepsOn: settings.beepEnabled
+        )
     }
 
     // MARK: - Chroma auto-hide

@@ -76,3 +76,47 @@ final class StartListTests: XCTestCase {
         XCTAssertEqual(EventorManager.timeToCentisecs("09:05:07"), (9 * 3600 + 5 * 60 + 7) * 100)
     }
 }
+
+/// A background refresh must never downgrade a loaded start list.
+/// Seen at a start: the class column disappeared part-way through, because the
+/// five-minute HTML poll replaced a browser import that had the classes.
+final class EventorRefreshTests: XCTestCase {
+
+    private func entry(_ name: String, className: String, start: Int = 10 * 3600 * 100) -> StartEntry {
+        var e = StartEntry(name: name, club: nil, start: start, startnumber: nil)
+        e.className = className
+        return e
+    }
+
+    private var loaded: [StartEntry] {
+        [entry("Anna", className: "D21"), entry("Bertil", className: "H21")]
+    }
+
+    func testRefreshLosingClassNamesIsRejected() {
+        let worse = [entry("Anna", className: ""), entry("Bertil", className: "")]
+        XCTAssertFalse(EventorManager.acceptsRefresh(worse, replacing: loaded))
+    }
+
+    func testRefreshLosingRunnersIsRejected() {
+        XCTAssertFalse(EventorManager.acceptsRefresh([entry("Anna", className: "D21")], replacing: loaded))
+    }
+
+    func testEmptyRefreshIsRejected() {
+        XCTAssertFalse(EventorManager.acceptsRefresh([], replacing: loaded))
+    }
+
+    func testRefreshAddingRunnersIsAccepted() {
+        let better = loaded + [entry("Cecilia", className: "D16")]
+        XCTAssertTrue(EventorManager.acceptsRefresh(better, replacing: loaded))
+    }
+
+    func testFirstImportIsAlwaysAccepted() {
+        XCTAssertTrue(EventorManager.acceptsRefresh(loaded, replacing: []))
+    }
+
+    /// A list that never had classes is not held back by this rule.
+    func testRefreshWithoutClassesIsFineWhenThereWereNone() {
+        let classless = [entry("Anna", className: ""), entry("Bertil", className: "")]
+        XCTAssertTrue(EventorManager.acceptsRefresh(classless, replacing: classless))
+    }
+}

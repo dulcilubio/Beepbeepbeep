@@ -24,6 +24,7 @@
 		79E045875AC7D05D711A108F /* LiveResultatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EEE0945179A9E9F8C26191E /* LiveResultatManager.swift */; };
 		7CE23FACBDDC5EEF1992B133 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE77E96E0DF73AE27680F5E /* ContentView.swift */; };
 		80065AEA82D7122A070530B8 /* StartList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35E5782A6FD339E4B555C11 /* StartList.swift */; };
+		90BAC52BB847A42F3469B82F /* NowPlayingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE3725F175A2FB833242E96 /* NowPlayingManager.swift */; };
 		999D7E60BBF3523DD2E656C1 /* JSONRepairTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476896A118B9C48190305E8A /* JSONRepairTests.swift */; };
 		9DD34E23E0171FC528DBEBFF /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773578700309145656708CC5 /* ClockView.swift */; };
 		9F7F3F2161B6B178123E6091 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D34F80DC5CA012EE027296 /* AppSettings.swift */; };
@@ -65,10 +66,11 @@
 		47F5B2DDD9813FE92EC0C2EA /* EventorImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventorImportView.swift; sourceTree = "<group>"; };
 		49E2E3A1E6C23300A6DA8340 /* startclockApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = startclockApp.swift; sourceTree = "<group>"; };
 		4F79889581C95134881E4EBE /* StartListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartListTests.swift; sourceTree = "<group>"; };
-		517C0686804D0A3E1A763060 /* startclock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = startclock.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		517C0686804D0A3E1A763060 /* startclock.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = startclock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A40EC5E3C3DD70CDC7B123 /* StatusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
 		56B0B4BC16BFEBAA0F4632D0 /* ClockStylePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockStylePickerView.swift; sourceTree = "<group>"; };
 		59D34F80DC5CA012EE027296 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		5CE3725F175A2FB833242E96 /* NowPlayingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingManager.swift; sourceTree = "<group>"; };
 		69C71EAC1ADEA02B42B8BEC9 /* AnalogClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalogClockView.swift; sourceTree = "<group>"; };
 		70E478D6A40A039FA99A82DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		773578700309145656708CC5 /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				11862F09879A4AF47FD85008 /* EventorManager.swift */,
 				EA8DD2D6431C288E5369E819 /* GNSSTimeManager.swift */,
 				0EEE0945179A9E9F8C26191E /* LiveResultatManager.swift */,
+				5CE3725F175A2FB833242E96 /* NowPlayingManager.swift */,
 				9A11DE5CDD6CB8487A0F8091 /* NTPClient.swift */,
 			);
 			path = Managers;
@@ -228,6 +231,7 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					09D476E28284355AFEAD2537 = {
+						DevelopmentTeam = 83NLQQ5KF5;
 						ProvisioningStyle = Automatic;
 					};
 					F054267B0C2808A5E6F07143 = {
@@ -290,6 +294,7 @@
 				2156CC95867172CC8ABAF5E9 /* JSONRepair.swift in Sources */,
 				79E045875AC7D05D711A108F /* LiveResultatManager.swift in Sources */,
 				B59330B7E18CBC78900AE013 /* NTPClient.swift in Sources */,
+				90BAC52BB847A42F3469B82F /* NowPlayingManager.swift in Sources */,
 				041771D632F3CD605CE993A1 /* ParticipantBannerView.swift in Sources */,
 				2A85E927FC80C0BF38D2A385 /* SelectCompetitionView.swift in Sources */,
 				D32E5D90EF2E5AEBA385BD4E /* SettingsView.swift in Sources */,
@@ -329,7 +334,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 249C3698G5;
 				INFOPLIST_FILE = startclock/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -345,7 +349,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 249C3698G5;
 				INFOPLIST_FILE = startclock/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

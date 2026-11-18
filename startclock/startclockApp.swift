@@ -6,6 +6,7 @@ struct startclockApp: App {
     @StateObject private var gnss = GNSSTimeManager()
     @StateObject private var liveresultat = LiveResultatManager()
     @StateObject private var eventor = EventorManager()
+    @StateObject private var nowPlaying = NowPlayingManager()
 
     var body: some Scene {
         WindowGroup {
@@ -14,6 +15,7 @@ struct startclockApp: App {
                 .environmentObject(gnss)
                 .environmentObject(liveresultat)
                 .environmentObject(eventor)
+                .environmentObject(nowPlaying)
         }
     }
 }

@@ -181,7 +181,7 @@ class EventorManager: ObservableObject {
         }
         var name = importedList?.name ?? "Eventor"
         let entries = Self.parseStartList(html: html, name: &name)
-        guard !entries.isEmpty else {
+        guard Self.acceptsRefresh(entries, replacing: importedList?.entries ?? []) else {
             lastRefreshFailed = true
             return
         }
@@ -193,6 +193,26 @@ class EventorManager: ObservableObject {
 
     private func refreshUsesSecondStarts() {
         usesSecondStarts = filteredEntries.usesSecondStarts
+    }
+
+    /// Whether a background refresh is an improvement on what is already loaded.
+    ///
+    /// The browser import reads the rendered page and comes back with class
+    /// names; the plain HTML fetch behind the five-minute poll can parse the
+    /// same event into fewer runners and no classes at all. Replacing a good
+    /// list with that is not news, it is a worse parse — and the class column
+    /// vanishing mid-competition is exactly how it shows up at a start.
+    nonisolated static func acceptsRefresh(
+        _ refreshed: [StartEntry],
+        replacing current: [StartEntry]
+    ) -> Bool {
+        guard !refreshed.isEmpty else { return false }
+        guard !current.isEmpty else { return true }
+        guard refreshed.count >= current.count else { return false }
+
+        let hadClasses = current.contains { !$0.className.isEmpty }
+        let hasClasses = refreshed.contains { !$0.className.isEmpty }
+        return !(hadClasses && !hasClasses)
     }
 
     /// Drops selected classes that no longer exist in the current list.
