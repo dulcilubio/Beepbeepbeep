@@ -192,22 +192,13 @@ struct SettingsView: View {
     @ViewBuilder
     private var clockSection: some View {
         Section("Clock") {
-            Picker("Style", selection: $settings.clockFont) {
-                Text("SF Pro").tag("sfpro")
-                Text("Condensed").tag("sfCondensed")
-                Text("Compressed").tag("sfCompressed")
-                Text("New York").tag("newYork")
-                Text("Courier New").tag("courierNew")
-                Text("Digital").tag("digital")
-                Text("Flap Board").tag("flapBoard")
-                Text("Analog").tag("analog")
-                Text("Analog (seconds)").tag("analogSeconds")
-                Text("Hour only").tag("hourOnly")
-                Text("Minute only").tag("minuteOnly")
-                Text("Second only").tag("secondOnly")
+            NavigationLink {
+                ClockStylePickerView()
+            } label: {
+                LabeledContent("Style", value: settings.clockStyle.displayName)
             }
-            // Bold has no effect on non-text styles
-            if styleUsesBold {
+            // Bold has no effect on the faces drawn as artwork.
+            if settings.clockStyle.usesBold {
                 Toggle("Bold", isOn: $settings.clockBold)
             }
             Toggle("Inverted (outdoor)", isOn: $settings.invertedMode)
@@ -286,17 +277,6 @@ struct SettingsView: View {
 
     private func durationLabel(_ ms: Int) -> String {
         ms >= 1000 ? "\(ms / 1000)s" : "\(ms)"
-    }
-
-    private var styleUsesBold: Bool {
-        switch settings.clockFont {
-        case "analog", "analogSeconds", "digital", "flapBoard":
-            return false
-        default:
-            // text-based styles (sfpro, sfCondensed, sfCompressed, newYork, courierNew,
-            // hourOnly, minuteOnly, secondOnly) all support bold
-            return true
-        }
     }
 
     private var fakeTimeBinding: Binding<Date> {

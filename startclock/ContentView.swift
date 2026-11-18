@@ -45,7 +45,12 @@ struct ContentView: View {
                             }
                         }
                     }
-                    ClockView(date: now, highlight: highlight)
+                    ClockView(
+                        date: now,
+                        highlight: highlight,
+                        style: settings.clockStyle,
+                        bold: settings.clockBold
+                    )
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 

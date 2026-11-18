@@ -34,9 +34,12 @@ class AppSettings: ObservableObject {
 
     // Display
     @AppStorage("invertedMode")              var invertedMode: Bool       = false
-    // "sfpro" | "sfCondensed" | "sfCompressed" | "newYork" | "courierNew"
-    // | "digital" | "flapBoard" | "analog" | "analogSeconds"
-    // | "hourOnly" | "minuteOnly" | "secondOnly"
+    // Stored as the raw value of ClockStyle — see clockStyle below.
     @AppStorage("clockFont")                 var clockFont: String        = "sfpro"
     @AppStorage("clockBold")                 var clockBold: Bool          = true
+
+    var clockStyle: ClockStyle {
+        get { ClockStyle(rawValue: clockFont) ?? .sfpro }
+        set { clockFont = newValue.rawValue }
+    }
 }

@@ -5,6 +5,10 @@ struct ClockView: View {
     @EnvironmentObject var settings: AppSettings
     let date: Date
     var highlight: ClockHighlight = .none
+    /// Passed in rather than read from settings so the style picker can render
+    /// every face side by side with the real clock code.
+    var style: ClockStyle
+    var bold: Bool
 
     private var components: (h: Int, m: Int, s: Int) {
         let cal = Calendar.current
@@ -24,40 +28,38 @@ struct ClockView: View {
     }
 
     private func resolvedFont(size: CGFloat) -> Font {
-        let uiWeight: UIFont.Weight     = settings.clockBold ? .bold    : .regular
-        let swiftWeight: Font.Weight    = settings.clockBold ? .bold    : .regular
+        let uiWeight: UIFont.Weight  = bold ? .bold : .regular
+        let swiftWeight: Font.Weight = bold ? .bold : .regular
 
-        switch settings.clockFont {
-        case "sfpro":
-            return .system(size: size, weight: swiftWeight, design: .default)
-        case "sfCondensed":
+        switch style {
+        case .sfCondensed:
             return Font(UIFont.systemFont(ofSize: size, weight: uiWeight, width: .condensed))
-        case "sfCompressed":
+        case .sfCompressed:
             return Font(UIFont.systemFont(ofSize: size, weight: uiWeight, width: .compressed))
-        case "newYork":
+        case .newYork:
             return .system(size: size, weight: swiftWeight, design: .serif)
-        case "courierNew":
-            let name = settings.clockBold ? "CourierNewPS-BoldMT" : "CourierNewPSMT"
-            return .custom(name, size: size)
+        case .courierNew:
+            return .custom(bold ? "CourierNewPS-BoldMT" : "CourierNewPSMT", size: size)
         default:
             return .system(size: size, weight: swiftWeight, design: .default)
         }
     }
 
     var body: some View {
-        let c         = components
-        let timeStr   = String(format: "%02d:%02d:%02d", c.h, c.m, c.s)
-        let color     = clockColor
+        let c       = components
+        let timeStr = String(format: "%02d:%02d:%02d", c.h, c.m, c.s)
+        let color   = clockColor
 
         Group {
-            switch settings.clockFont {
-            case "digital":
+            switch style {
+            case .digital:
                 SevenSegmentClockView(timeString: timeStr, color: color)
-            case "flapBoard":
+
+            case .flapBoard:
                 FlapClockView(timeString: timeStr, color: color)
-            case "analog", "analogSeconds":
+
+            case .analog, .analogSeconds:
                 GeometryReader { geo in
-                    let secondsOnly = settings.clockFont == "analogSeconds"
                     let fontSize = min(geo.size.height * 0.13, geo.size.width / 5.2)
                     VStack(spacing: 4) {
                         Text(timeStr)
@@ -65,21 +67,21 @@ struct ClockView: View {
                             .monospacedDigit()
                             .foregroundStyle(color)
                             .lineLimit(1)
-                        AnalogClockView(date: date, secondsOnly: secondsOnly, accentColor: color)
+                        AnalogClockView(date: date, secondsOnly: style == .analogSeconds, accentColor: color)
                     }
                     .frame(width: geo.size.width, height: geo.size.height)
                 }
-            case "hourOnly", "minuteOnly", "secondOnly":
+
+            case .hourOnly, .minuteOnly, .secondOnly:
                 GeometryReader { geo in
-                    let bold = settings.clockBold
                     // Two digits — roughly half the divisor of the full HH:MM:SS string
                     let widthDivisor: CGFloat = bold ? 1.25 : 1.15
                     let fontSize = min(geo.size.width / widthDivisor, geo.size.height * 0.92)
                     let value: Int = {
-                        switch settings.clockFont {
-                        case "hourOnly":   return c.h
-                        case "minuteOnly": return c.m
-                        default:           return c.s
+                        switch style {
+                        case .hourOnly:   return c.h
+                        case .minuteOnly: return c.m
+                        default:          return c.s
                         }
                     }()
                     Text(String(format: "%02d", value))
@@ -92,16 +94,16 @@ struct ClockView: View {
                         .lineLimit(1)
                         .frame(width: geo.size.width, height: geo.size.height)
                 }
+
             default:
                 GeometryReader { geo in
-                    let bold = settings.clockBold
                     let widthDivisor: CGFloat = {
-                        switch settings.clockFont {
-                        case "sfpro":        return bold ? 4.55 : 4.15
-                        case "sfCondensed":  return bold ? 3.55 : 3.20
-                        case "sfCompressed": return bold ? 3.05 : 2.65
-                        case "newYork":      return bold ? 4.75 : 4.35
-                        default:             return bold ? 4.75 : 4.35
+                        switch style {
+                        case .sfCondensed:  return bold ? 3.55 : 3.20
+                        case .sfCompressed: return bold ? 3.05 : 2.65
+                        case .newYork:      return bold ? 4.75 : 4.35
+                        case .sfpro:        return bold ? 4.55 : 4.15
+                        default:            return bold ? 4.75 : 4.35
                         }
                     }()
                     let fontSize = min(geo.size.width / widthDivisor, geo.size.height * 0.92)

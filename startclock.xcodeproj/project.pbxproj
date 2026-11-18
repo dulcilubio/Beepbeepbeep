@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0143B207DB639AB0F8179E0A /* TimeSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92072EDEC1DA6F2141DDE2 /* TimeSyncTests.swift */; };
+		030062C8E4988342F7ACCE77 /* ClockStylePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B0B4BC16BFEBAA0F4632D0 /* ClockStylePickerView.swift */; };
 		041771D632F3CD605CE993A1 /* ParticipantBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A5F3685BA4F0C771D38E3B /* ParticipantBannerView.swift */; };
 		0E19AB31476385498F02E450 /* SevenSegmentClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0CB389B17DFD5AFE00F73C8 /* SevenSegmentClockView.swift */; };
 		1A06D4A924F6B022DE6D979F /* StartListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F79889581C95134881E4EBE /* StartListTests.swift */; };
@@ -28,9 +29,11 @@
 		9F7F3F2161B6B178123E6091 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D34F80DC5CA012EE027296 /* AppSettings.swift */; };
 		A0F960624EEBEFC06D52BCC0 /* AnalogClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C71EAC1ADEA02B42B8BEC9 /* AnalogClockView.swift */; };
 		A8EFB8EAEADF416718E6CB53 /* EventorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11862F09879A4AF47FD85008 /* EventorManager.swift */; };
+		A9F776E9CF0D3224EBE5B111 /* ClockStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFDAFB883A420BB2BA68AE0 /* ClockStyleTests.swift */; };
 		AF158694BBF5311DC73D84A2 /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A40EC5E3C3DD70CDC7B123 /* StatusBarView.swift */; };
 		AF382A6E6BDA16DBD6A95FAF /* EventorImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F5B2DDD9813FE92EC0C2EA /* EventorImportView.swift */; };
 		B59330B7E18CBC78900AE013 /* NTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A11DE5CDD6CB8487A0F8091 /* NTPClient.swift */; };
+		B7B74966E97B403BF25712B1 /* ClockStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A42D3ADF0AEA8F758D80061 /* ClockStyle.swift */; };
 		D32E5D90EF2E5AEBA385BD4E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB3D78665FEEF1BF19F56D4 /* SettingsView.swift */; };
 		E8A2486C7A702ADDF6C5E6B3 /* ControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F26B359B1AB1E3E8DD8BC7 /* ControlsView.swift */; };
 		F73D3329BD2761FE92472576 /* StartScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB81E65C10D4F539ECCC0AC0 /* StartScheduleTests.swift */; };
@@ -51,8 +54,10 @@
 /* Begin PBXFileReference section */
 		060C3A875F879955AC000972 /* EventorBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventorBrowserView.swift; sourceTree = "<group>"; };
 		06EECB0562EB51265387DCDC /* JSONRepair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONRepair.swift; sourceTree = "<group>"; };
+		0A42D3ADF0AEA8F758D80061 /* ClockStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockStyle.swift; sourceTree = "<group>"; };
 		0EEE0945179A9E9F8C26191E /* LiveResultatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveResultatManager.swift; sourceTree = "<group>"; };
 		11862F09879A4AF47FD85008 /* EventorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventorManager.swift; sourceTree = "<group>"; };
+		2BFDAFB883A420BB2BA68AE0 /* ClockStyleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockStyleTests.swift; sourceTree = "<group>"; };
 		37846BF55EAEFC04EF4E7539 /* CompetitionPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionPickerView.swift; sourceTree = "<group>"; };
 		3A28F9EBE3073BE9B5BFBB91 /* startclockTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = startclockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		476896A118B9C48190305E8A /* JSONRepairTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONRepairTests.swift; sourceTree = "<group>"; };
@@ -62,6 +67,7 @@
 		4F79889581C95134881E4EBE /* StartListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartListTests.swift; sourceTree = "<group>"; };
 		517C0686804D0A3E1A763060 /* startclock.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = startclock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A40EC5E3C3DD70CDC7B123 /* StatusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
+		56B0B4BC16BFEBAA0F4632D0 /* ClockStylePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockStylePickerView.swift; sourceTree = "<group>"; };
 		59D34F80DC5CA012EE027296 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		69C71EAC1ADEA02B42B8BEC9 /* AnalogClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalogClockView.swift; sourceTree = "<group>"; };
 		70E478D6A40A039FA99A82DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -96,6 +102,7 @@
 		2FD398EA2116A797921D3F0C /* startclockTests */ = {
 			isa = PBXGroup;
 			children = (
+				2BFDAFB883A420BB2BA68AE0 /* ClockStyleTests.swift */,
 				476896A118B9C48190305E8A /* JSONRepairTests.swift */,
 				4F79889581C95134881E4EBE /* StartListTests.swift */,
 				DB81E65C10D4F539ECCC0AC0 /* StartScheduleTests.swift */,
@@ -108,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				59D34F80DC5CA012EE027296 /* AppSettings.swift */,
+				0A42D3ADF0AEA8F758D80061 /* ClockStyle.swift */,
 				06EECB0562EB51265387DCDC /* JSONRepair.swift */,
 				C35E5782A6FD339E4B555C11 /* StartList.swift */,
 				F336D33E257886286245E4DD /* StartSchedule.swift */,
@@ -155,6 +163,7 @@
 			children = (
 				69C71EAC1ADEA02B42B8BEC9 /* AnalogClockView.swift */,
 				C5A228474C4A928575E81B5C /* ClassSelectionList.swift */,
+				56B0B4BC16BFEBAA0F4632D0 /* ClockStylePickerView.swift */,
 				773578700309145656708CC5 /* ClockView.swift */,
 				37846BF55EAEFC04EF4E7539 /* CompetitionPickerView.swift */,
 				F1F26B359B1AB1E3E8DD8BC7 /* ControlsView.swift */,
@@ -268,6 +277,8 @@
 				9F7F3F2161B6B178123E6091 /* AppSettings.swift in Sources */,
 				514BA7CF49D229AD2E562C0C /* AudioManager.swift in Sources */,
 				5B44A0B44F9228BC630DD5E0 /* ClassSelectionList.swift in Sources */,
+				B7B74966E97B403BF25712B1 /* ClockStyle.swift in Sources */,
+				030062C8E4988342F7ACCE77 /* ClockStylePickerView.swift in Sources */,
 				9DD34E23E0171FC528DBEBFF /* ClockView.swift in Sources */,
 				351CB743FEAF5ACFE250FB55 /* CompetitionPickerView.swift in Sources */,
 				7CE23FACBDDC5EEF1992B133 /* ContentView.swift in Sources */,
@@ -295,6 +306,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9F776E9CF0D3224EBE5B111 /* ClockStyleTests.swift in Sources */,
 				999D7E60BBF3523DD2E656C1 /* JSONRepairTests.swift in Sources */,
 				1A06D4A924F6B022DE6D979F /* StartListTests.swift in Sources */,
 				F73D3329BD2761FE92472576 /* StartScheduleTests.swift in Sources */,
