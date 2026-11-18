@@ -254,3 +254,86 @@ final class BannerLayoutTests: XCTestCase {
         XCTAssertEqual(shown.departed, 0)
     }
 }
+
+/// Fitting a whole start group on screen. A mass start puts tens of runners in
+/// one minute, and a crew calling names cannot work from "+27 more".
+final class BannerFitTests: XCTestCase {
+
+    /// Roughly an iPad in portrait: a wide banner with room for ten rows.
+    private func fit(_ count: Int,
+                     scale: Double = 1.0,
+                     height: Double = 280,
+                     width: Double = 1300) -> StartSchedule.BannerFit {
+        StartSchedule.fit(
+            currentCount: count,
+            requestedScale: scale, availableHeight: height, availableWidth: width
+        )
+    }
+
+    func testASmallGroupKeepsItsContextAndTextSize() {
+        let result = fit(4)
+        XCTAssertTrue(result.showsContext)
+        XCTAssertEqual(result.columns, 1)
+        XCTAssertEqual(result.scale, 1.0, accuracy: 0.001)
+        XCTAssertEqual(result.hidden, 0)
+    }
+
+    /// A group that fills the banner on its own keeps the single-column layout;
+    /// the groups around it are squeezed out one row at a time by the allocator.
+    func testAGroupFillingTheBannerPushesTheContextOut() {
+        let result = fit(10)
+        XCTAssertEqual(result.columns, 1)
+        XCTAssertEqual(result.hidden, 0)
+
+        let shown = StartSchedule.rowAllocation(fitting: 10, departed: 3, current: 10, next: 3)
+        XCTAssertEqual(shown.current, 10, "everyone starting is shown")
+        XCTAssertEqual(shown.next, 0)
+        XCTAssertEqual(shown.departed, 0, "the ones already running give way first")
+        XCTAssertEqual(shown.hiddenCurrent, 0)
+    }
+
+    func testAMassStartWidensIntoColumnsBeforeShrinkingTheText() {
+        let result = fit(33)
+        XCTAssertGreaterThan(result.columns, 1, "columns come before smaller text")
+        XCTAssertGreaterThan(result.scale, 0.8, "and the text barely moves")
+        XCTAssertGreaterThanOrEqual(result.columns * result.rowsPerColumn, 33)
+        XCTAssertEqual(result.hidden, 0, "everyone starting is on screen")
+    }
+
+    /// Thirty runners fit in three columns without shrinking at all.
+    func testColumnsAloneCanBeEnough() {
+        let result = fit(30)
+        XCTAssertEqual(result.scale, 1.0, accuracy: 0.001)
+        XCTAssertEqual(result.hidden, 0)
+    }
+
+    func testColumnsAreBalanced() {
+        let result = fit(33)
+        // No column may be taller than the banner allows.
+        XCTAssertLessThanOrEqual(result.rowsPerColumn * result.columns - 33, result.columns)
+    }
+
+    func testANarrowScreenShrinksTheTextInstead() {
+        let result = fit(20, width: 320)
+        XCTAssertEqual(result.columns, 1, "no room for a second column")
+        XCTAssertLessThan(result.scale, 1.0)
+        XCTAssertEqual(result.hidden, 0)
+    }
+
+    func testTextNeverShrinksBelowTheReadableFloor() {
+        let result = fit(400, height: 200, width: 400)
+        XCTAssertEqual(result.scale, StartSchedule.minBannerScale, accuracy: 0.001)
+        XCTAssertGreaterThan(result.hidden, 0, "only now does the banner admit to hiding anyone")
+    }
+
+    func testABiggerRequestedSizeIsHonouredWhenItFits() {
+        let result = fit(3, scale: 2.0, height: 400)
+        XCTAssertEqual(result.scale, 2.0, accuracy: 0.001)
+    }
+
+    func testNoRunnersNeedsNoColumns() {
+        let result = fit(0)
+        XCTAssertEqual(result.rowsPerColumn, 0)
+        XCTAssertEqual(result.hidden, 0)
+    }
+}

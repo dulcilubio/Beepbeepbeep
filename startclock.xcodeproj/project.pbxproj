@@ -66,7 +66,7 @@
 		47F5B2DDD9813FE92EC0C2EA /* EventorImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventorImportView.swift; sourceTree = "<group>"; };
 		49E2E3A1E6C23300A6DA8340 /* startclockApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = startclockApp.swift; sourceTree = "<group>"; };
 		4F79889581C95134881E4EBE /* StartListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartListTests.swift; sourceTree = "<group>"; };
-		517C0686804D0A3E1A763060 /* startclock.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = startclock.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		517C0686804D0A3E1A763060 /* startclock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = startclock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55A40EC5E3C3DD70CDC7B123 /* StatusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
 		56B0B4BC16BFEBAA0F4632D0 /* ClockStylePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockStylePickerView.swift; sourceTree = "<group>"; };
 		59D34F80DC5CA012EE027296 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
@@ -231,7 +231,6 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					09D476E28284355AFEAD2537 = {
-						DevelopmentTeam = 83NLQQ5KF5;
 						ProvisioningStyle = Automatic;
 					};
 					F054267B0C2808A5E6F07143 = {
@@ -334,6 +333,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 257V44642S;
 				INFOPLIST_FILE = startclock/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -349,6 +349,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 257V44642S;
 				INFOPLIST_FILE = startclock/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

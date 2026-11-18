@@ -111,7 +111,6 @@ enum StartSchedule {
     }
 
     static let maxDepartedRows = 3
-    static let maxCurrentRows  = 6
     static let maxNextRows     = 3
 
     static func rowAllocation(
@@ -122,7 +121,7 @@ enum StartSchedule {
     ) -> RowAllocation {
         var remaining = max(available, 1)
 
-        let currentShown = min(current, min(maxCurrentRows, remaining))
+        let currentShown = min(current, remaining)
         remaining -= currentShown
         let nextShown = min(next, min(maxNextRows, remaining))
         remaining -= nextShown
@@ -133,6 +132,94 @@ enum StartSchedule {
             current: currentShown,
             next: nextShown,
             hiddenCurrent: current - currentShown
+        )
+    }
+
+    // MARK: - Fitting a whole start group on screen
+
+    /// Metrics per 1.0 of text scale, shared with the banner so the solver and
+    /// the layout cannot drift apart.
+    static let rowHeightUnit:    Double = 23.5
+    static let columnWidthUnit:  Double = 300
+    static let bannerChromeUnit: Double = 40
+    static let minBannerScale:   Double = 0.45
+    static let maxBannerColumns = 3
+
+    /// How to lay the group that is starting out so that every one of them is
+    /// on screen. A mass start can put thirty runners in one minute, and a
+    /// start crew calling names cannot use "+27 more" — so the banner widens
+    /// into columns first, keeping the chosen text size, and only then shrinks
+    /// the text. Below `minBannerScale` nothing is readable at a distance, so
+    /// that is where it stops.
+    struct BannerFit: Equatable {
+        var columns = 1
+        var rowsPerColumn = 0
+        var scale: Double = 1
+        /// False once the group needs the whole banner to itself.
+        var showsContext = true
+        var hidden = 0
+    }
+
+    /// Rows of names that fit in `availableHeight` at `scale`.
+    static func rowsThatFit(height: Double, scale: Double) -> Int {
+        max(0, Int(floor((height - bannerChromeUnit * scale) / (rowHeightUnit * scale))))
+    }
+
+    static func fit(
+        currentCount: Int,
+        requestedScale: Double,
+        availableHeight: Double,
+        availableWidth: Double
+    ) -> BannerFit {
+        func rows(at scale: Double, reserving extraRows: Int) -> Int {
+            let usable = availableHeight - bannerChromeUnit * scale
+            let fitting = Int(floor(usable / (rowHeightUnit * scale))) - extraRows
+            return max(fitting, 0)
+        }
+        func columns(at scale: Double) -> Int {
+            let fitting = Int(floor(availableWidth / (columnWidthUnit * scale)))
+            return max(1, min(maxBannerColumns, fitting))
+        }
+
+        guard currentCount > 0 else {
+            return BannerFit(rowsPerColumn: 0, scale: requestedScale)
+        }
+
+        // 1. The starting group fits in one column at the chosen size. The
+        //    groups before and after share whatever is left — they are trimmed
+        //    row by row, never dropped as a block.
+        if currentCount <= rows(at: requestedScale, reserving: 0) {
+            return BannerFit(rowsPerColumn: currentCount, scale: requestedScale)
+        }
+
+        // 2. The banner belongs to the starting group alone: add columns first,
+        //    give up text size only when the width is spent.
+        var scale = requestedScale
+        while scale >= minBannerScale - 0.0001 {
+            let rowCount = rows(at: scale, reserving: 0)
+            if rowCount > 0 {
+                for columnCount in 1...columns(at: scale) where rowCount * columnCount >= currentCount {
+                    return BannerFit(
+                        columns: columnCount,
+                        rowsPerColumn: Int(ceil(Double(currentCount) / Double(columnCount))),
+                        scale: scale,
+                        showsContext: false
+                    )
+                }
+            }
+            scale -= 0.05
+        }
+
+        // 3. Smallest readable text, every column in use — only now is anyone
+        //    left out, and the banner says how many.
+        let rowCount = max(rows(at: minBannerScale, reserving: 0), 1)
+        let columnCount = columns(at: minBannerScale)
+        return BannerFit(
+            columns: columnCount,
+            rowsPerColumn: rowCount,
+            scale: minBannerScale,
+            showsContext: false,
+            hidden: max(0, currentCount - rowCount * columnCount)
         )
     }
 

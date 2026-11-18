@@ -71,7 +71,8 @@ struct ContentView: View {
                         // Scaling the names up must never squeeze the clock —
                         // rows drop out instead. The 40 pt is the status strip.
                         maxHeight: max(0, geo.size.height
-                                          * (1 - Self.clockMinHeightFraction) - 92)
+                                          * (1 - Self.clockMinHeightFraction) - 92),
+                        availableWidth: geo.size.width - 60
                     )
                     .padding(.horizontal, 16)
                     .padding(.bottom, 8)
