@@ -14,13 +14,15 @@ settings:
     INFOPLIST_FILE: startclock/Info.plist
     ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
-    DEVELOPMENT_TEAM: 83NLQQ5KF5
+    # The team that owns se.erikfrick.startclock. 83NLQQ5KF5 sat here for a
+    # while but is a certificate ID, not a team, so nothing could be signed.
+    DEVELOPMENT_TEAM: 257V44642S
     CODE_SIGN_STYLE: Automatic
     # Version lives here — Info.plist only references these. Bump
     # MARKETING_VERSION for a release users see, CURRENT_PROJECT_VERSION for
     # every upload (App Store Connect requires it to be unique per version).
     MARKETING_VERSION: "1.1"
-    CURRENT_PROJECT_VERSION: "2"
+    CURRENT_PROJECT_VERSION: "3"
 
 targets:
   startclock:
@@ -31,6 +33,9 @@ targets:
     info:
       path: startclock/Info.plist
       properties:
+        # Only HTTPS through the system's own TLS — no encryption of our own,
+        # which is what App Store Connect asks about on every upload.
+        ITSAppUsesNonExemptEncryption: false
         # Reference the build settings above so the version has one home.
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
