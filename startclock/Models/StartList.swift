@@ -36,7 +36,27 @@ struct StartEntry: Codable, Equatable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case name, club, start, startnumber
+        case name, club, start, startnumber, className
+    }
+
+    init(name: String, club: String?, start: Int?, startnumber: String?, className: String = "") {
+        self.name = name
+        self.club = club
+        self.start = start
+        self.startnumber = startnumber
+        self.className = className
+    }
+
+    /// `className` is absent from the liveresultat API — it comes from which
+    /// class was fetched — and from lists saved before it was persisted at all,
+    /// so a missing one is normal rather than an error.
+    init(from decoder: Decoder) throws {
+        let container  = try decoder.container(keyedBy: CodingKeys.self)
+        name           = try container.decode(String.self, forKey: .name)
+        club           = try container.decodeIfPresent(String.self, forKey: .club)
+        start          = try container.decodeIfPresent(Int.self, forKey: .start)
+        startnumber    = try container.decodeIfPresent(String.self, forKey: .startnumber)
+        className      = try container.decodeIfPresent(String.self, forKey: .className) ?? ""
     }
 }
 

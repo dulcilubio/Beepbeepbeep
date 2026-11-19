@@ -120,3 +120,39 @@ final class EventorRefreshTests: XCTestCase {
         XCTAssertTrue(EventorManager.acceptsRefresh(classless, replacing: classless))
     }
 }
+
+/// An imported start list is kept in UserDefaults as JSON and read back on
+/// launch. The class names used to be dropped on the way through, so an Eventor
+/// list lost its class column as soon as the app was restarted.
+final class StartEntryCodingTests: XCTestCase {
+
+    func testClassNameSurvivesARoundTrip() throws {
+        let list = OfflineStartList(
+            name: "Höstrusket",
+            importedAt: Date(timeIntervalSince1970: 1_763_000_000),
+            entries: [StartEntry(name: "Anna", club: "OK Linné", start: 3_768_600,
+                                 startnumber: nil, className: "D21")]
+        )
+        let data    = try JSONEncoder().encode(list)
+        let decoded = try JSONDecoder().decode(OfflineStartList.self, from: data)
+
+        XCTAssertEqual(decoded.entries.first?.className, "D21")
+        XCTAssertEqual(decoded.entries.first?.club, "OK Linné")
+        XCTAssertEqual(decoded, list)
+    }
+
+    /// The liveresultat API never sends a class name — it comes from the class
+    /// that was fetched — so its absence must decode, not throw.
+    func testApiResponseWithoutAClassNameDecodes() throws {
+        let raw = #"{"status":"OK","results":[{"name":"Bertil","club":"IFK Mora","start":3600000}]}"#
+        let decoded = try JSONDecoder().decode(ClassResultsResponse.self, from: Data(raw.utf8))
+        XCTAssertEqual(decoded.results?.first?.className, "")
+        XCTAssertEqual(decoded.results?.first?.startSeconds, 36000)
+    }
+
+    func testListsSavedBeforeClassNamesWereKeptStillLoad() throws {
+        let legacy = #"{"name":"Old","importedAt":0,"entries":[{"name":"Cecilia","start":3600000}]}"#
+        let decoded = try JSONDecoder().decode(OfflineStartList.self, from: Data(legacy.utf8))
+        XCTAssertEqual(decoded.entries.first?.className, "")
+    }
+}
